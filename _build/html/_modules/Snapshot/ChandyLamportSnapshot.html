@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Snapshot.ChandyLamportSnapshot &mdash; Distributed Algorithm on AHCv2: distalgname V1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=92fd9be5" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=f2281d4f"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Distributed Algorithm on AHCv2: distalgname
+          </a>
+              <div class="version">
+                V1.0.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../docs/elecname/elecname.html">|DistAlgName|</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../docs/rubric.html">Assessment Rubric</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../docs/elecname/code.html">Code Documentation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Distributed Algorithm on AHCv2: distalgname</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">Snapshot.ChandyLamportSnapshot</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for Snapshot.ChandyLamportSnapshot</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">The Chandy-Lamport Algorithm is a key method for capturing consistent global snapshots in distributed systems, comprising the initiation of marker propagation, recording of local states by processes upon marker reception, and subsequent snapshot reconstruction. It allows for the capture of snapshots without halting system execution, facilitating concurrent operations and serving various purposes like debugging and failure recovery. However, the algorithm exhibits limitations including increased message overhead due to marker propagation, challenges in managing concurrency which may affect snapshot accuracy, potential difficulties in handling faults during snapshot collection, and scalability concerns as system size grows. Despite these limitations, the Chandy-Lamport Algorithm remains foundational in distributed systems, driving further research in snapshot capture techniques.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">Enum</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
+<span class="kn">from</span> <span class="nn">adhoccomputing.Experimentation.Topology</span> <span class="kn">import</span> <span class="n">Topology</span>
+<span class="kn">from</span> <span class="nn">adhoccomputing.GenericModel</span> <span class="kn">import</span> <span class="n">GenericModel</span><span class="p">,</span> <span class="n">GenericMessageHeader</span><span class="p">,</span>  <span class="n">GenericMessage</span>
+<span class="kn">from</span> <span class="nn">adhoccomputing.Generics</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">Snapshot.Snapshot</span> <span class="kn">import</span> <span class="n">SnapshotComponentModel</span><span class="p">,</span> <span class="n">SnapshotMessageTypes</span><span class="p">,</span> <span class="n">SnapshotEventTypes</span>
+
+
+
+<div class="viewcode-block" id="ChandyLamportMessageTypes">
+<a class="viewcode-back" href="../../docs/elecname/generated/Snapshot.ChandyLamportSnapshot.html#Snapshot.ChandyLamportSnapshot.ChandyLamportMessageTypes">[docs]</a>
+<span class="k">class</span> <span class="nc">ChandyLamportMessageTypes</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+    <span class="n">MARKER</span> <span class="o">=</span> <span class="s2">&quot;MARKER&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="ChandyLamportState">
+<a class="viewcode-back" href="../../docs/elecname/generated/Snapshot.ChandyLamportSnapshot.html#Snapshot.ChandyLamportSnapshot.ChandyLamportState">[docs]</a>
+<span class="k">class</span> <span class="nc">ChandyLamportState</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    ChandyLamportState keeps track of states.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">component</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">chnl_states</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">component_id</span> <span class="o">=</span> <span class="n">component</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">component_state</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">state</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">component_state</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">chnl_states</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">c</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">chnl_states</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">chnl_states</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ChandyLamportComponentModel">
+<a class="viewcode-back" href="../../docs/elecname/generated/Snapshot.ChandyLamportSnapshot.html#Snapshot.ChandyLamportSnapshot.ChandyLamportComponentModel">[docs]</a>
+<span class="k">class</span> <span class="nc">ChandyLamportComponentModel</span><span class="p">(</span><span class="n">SnapshotComponentModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A ComponentModel that you can take a snapshot of using the Chandy-Lamport algorithm</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">componentname</span><span class="p">,</span> <span class="n">componentinstancenumber</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">configurationparameters</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">num_worker_threads</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">topology</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">componentname</span><span class="p">,</span> <span class="n">componentinstancenumber</span><span class="p">,</span> <span class="n">context</span><span class="p">,</span> <span class="n">configurationparameters</span><span class="p">,</span> <span class="n">num_worker_threads</span><span class="p">,</span> <span class="n">topology</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">global_state</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">in_chnl_states</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">in_chnl_events</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mark_recv_chnls</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gsu_chnls</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+<div class="viewcode-block" id="ChandyLamportComponentModel.on_gsu_recv">
+<a class="viewcode-back" href="../../docs/elecname/generated/Snapshot.ChandyLamportSnapshot.html#Snapshot.ChandyLamportSnapshot.ChandyLamportComponentModel.on_gsu_recv">[docs]</a>
+    <span class="k">def</span> <span class="nf">on_gsu_recv</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">:</span> <span class="n">ChandyLamportState</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">init_snapshot</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="n">report</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;State of component: </span><span class="si">{</span><span class="n">state</span><span class="o">.</span><span class="n">component_id</span><span class="si">}</span><span class="s2">=&quot;</span>
+        <span class="n">report</span> <span class="o">+=</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">state</span><span class="o">.</span><span class="n">component_state</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">report</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">chnl</span><span class="p">,</span> <span class="n">events</span> <span class="ow">in</span> <span class="n">state</span><span class="o">.</span><span class="n">chnl_states</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">chnl_rep</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;State of channel: </span><span class="si">{</span><span class="n">chnl</span><span class="si">}</span><span class="s2">=&quot;</span>
+            <span class="n">chnl_rep</span> <span class="o">+=</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">events</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">chnl_rep</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ChandyLamportComponentModel.send_msg">
+<a class="viewcode-back" href="../../docs/elecname/generated/Snapshot.ChandyLamportSnapshot.html#Snapshot.ChandyLamportSnapshot.ChandyLamportComponentModel.send_msg">[docs]</a>
+    <span class="k">def</span> <span class="nf">send_msg</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">:</span> <span class="n">Event</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">send_down</span><span class="p">(</span><span class="n">event</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ChandyLamportComponentModel.mark_send">
+<a class="viewcode-back" href="../../docs/elecname/generated/Snapshot.ChandyLamportSnapshot.html#Snapshot.ChandyLamportSnapshot.ChandyLamportComponentModel.mark_send">[docs]</a>
+    <span class="k">def</span> <span class="nf">mark_send</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Record the state</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">re</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">recv_events</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">re</span><span class="p">)</span>
+
+        <span class="c1"># Broadcast the mark message</span>
+        <span class="n">mark_msg</span> <span class="o">=</span> <span class="n">GenericMessage</span><span class="p">(</span>
+            <span class="n">GenericMessageHeader</span><span class="p">(</span><span class="n">ChandyLamportMessageTypes</span><span class="o">.</span><span class="n">MARKER</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+            <span class="kc">None</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">send_msg</span><span class="p">(</span><span class="n">Event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">EventTypes</span><span class="o">.</span><span class="n">MFRT</span><span class="p">,</span> <span class="n">mark_msg</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="ChandyLamportComponentModel.on_take_snapshot">
+<a class="viewcode-back" href="../../docs/elecname/generated/Snapshot.ChandyLamportSnapshot.html#Snapshot.ChandyLamportSnapshot.ChandyLamportComponentModel.on_take_snapshot">[docs]</a>
+    <span class="k">def</span> <span class="nf">on_take_snapshot</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initializes a global snapshot and a report will be printed out when</span>
+<span class="sd">        complete&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mark_send</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="ChandyLamportComponentModel.mark_recv">
+<a class="viewcode-back" href="../../docs/elecname/generated/Snapshot.ChandyLamportSnapshot.html#Snapshot.ChandyLamportSnapshot.ChandyLamportComponentModel.mark_recv">[docs]</a>
+    <span class="k">def</span> <span class="nf">mark_recv</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">from_chnl</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># First mark message, save component and channel state</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mark_send</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">in_chnl_states</span><span class="p">[</span><span class="n">from_chnl</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Consequent mark messages, save channel states</span>
+            <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">in_chnl_events</span><span class="p">[</span><span class="n">from_chnl</span><span class="p">]:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">in_chnl_states</span><span class="p">[</span><span class="n">e</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">mark_recv_chnls</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">from_chnl</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mark_recv_chnls</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">chnls</span><span class="p">:</span>
+            <span class="c1"># Local snapshot completed, broadcast the local state</span>
+            <span class="n">local_state</span> <span class="o">=</span> <span class="n">ChandyLamportState</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">componentinstancenumber</span><span class="p">,</span>
+                                             <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">in_chnl_states</span><span class="p">)</span>
+            <span class="n">gsu_msg</span> <span class="o">=</span> <span class="n">GenericMessage</span><span class="p">(</span>
+                <span class="n">GenericMessageHeader</span><span class="p">(</span><span class="n">SnapshotMessageTypes</span><span class="o">.</span><span class="n">GLOBALSNAPSHOT</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+                <span class="n">local_state</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">send_msg</span><span class="p">(</span><span class="n">Event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">EventTypes</span><span class="o">.</span><span class="n">MFRT</span><span class="p">,</span> <span class="n">gsu_msg</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">gsu_recv</span><span class="p">(</span><span class="n">local_state</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ChandyLamportComponentModel.msg_recv">
+<a class="viewcode-back" href="../../docs/elecname/generated/Snapshot.ChandyLamportSnapshot.html#Snapshot.ChandyLamportSnapshot.ChandyLamportComponentModel.msg_recv">[docs]</a>
+    <span class="k">def</span> <span class="nf">msg_recv</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">:</span> <span class="n">Event</span><span class="p">):</span>
+        <span class="n">from_chnl</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">channel_of</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+        <span class="c1"># If received message is of type MARKER or GLOBALSNAPSHOT; process them separately</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">contnt</span> <span class="o">:=</span> <span class="n">event</span><span class="o">.</span><span class="n">eventcontent</span><span class="p">)</span> <span class="o">==</span> <span class="n">GenericMessage</span> <span class="ow">and</span>\
+           <span class="nb">type</span><span class="p">(</span><span class="n">header</span> <span class="o">:=</span> <span class="n">contnt</span><span class="o">.</span><span class="n">header</span><span class="p">)</span> <span class="o">==</span> <span class="n">GenericMessageHeader</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">header</span><span class="o">.</span><span class="n">messagetype</span> <span class="o">==</span> <span class="n">ChandyLamportMessageTypes</span><span class="o">.</span><span class="n">MARKER</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">mark_recv</span><span class="p">(</span><span class="n">from_chnl</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">header</span><span class="o">.</span><span class="n">messagetype</span> <span class="o">==</span> <span class="n">SnapshotMessageTypes</span><span class="o">.</span><span class="n">GLOBALSNAPSHOT</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">gsu_recv</span><span class="p">(</span><span class="n">contnt</span><span class="o">.</span><span class="n">payload</span><span class="p">)</span>
+
+            <span class="k">return</span> <span class="n">event</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">event</span>
+
+        <span class="c1"># If the state is not recorded</span>
+        <span class="k">if</span> <span class="n">from_chnl</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">in_chnl_states</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">in_chnl_events</span><span class="p">[</span><span class="n">from_chnl</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">event</span></div>
+
+
+<div class="viewcode-block" id="ChandyLamportComponentModel.reset_state">
+<a class="viewcode-back" href="../../docs/elecname/generated/Snapshot.ChandyLamportSnapshot.html#Snapshot.ChandyLamportSnapshot.ChandyLamportComponentModel.reset_state">[docs]</a>
+    <span class="k">def</span> <span class="nf">reset_state</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">reset_state</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">in_chnl_states</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">in_chnl_events</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mark_recv_chnls</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span></div>
+</div>
+
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Your Name.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

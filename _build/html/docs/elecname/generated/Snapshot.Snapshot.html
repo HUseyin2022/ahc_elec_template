@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Snapshot.Snapshot &mdash; Distributed Algorithm on AHCv2: distalgname V1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=92fd9be5" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=f2281d4f"></script>
+        <script src="../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Snapshot.ChandyLamportSnapshot" href="Snapshot.ChandyLamportSnapshot.html" />
+    <link rel="prev" title="Code Documentation" href="../code.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            Distributed Algorithm on AHCv2: distalgname
+          </a>
+              <div class="version">
+                V1.0.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../elecname.html">|DistAlgName|</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rubric.html">Assessment Rubric</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../code.html">Code Documentation</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Snapshot.Snapshot</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Snapshot.Snapshot.SnapshotComponentModel"><code class="docutils literal notranslate"><span class="pre">SnapshotComponentModel</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#Snapshot.Snapshot.SnapshotComponentModel.on_connected_to_component"><code class="docutils literal notranslate"><span class="pre">SnapshotComponentModel.on_connected_to_component()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Snapshot.Snapshot.SnapshotComponentModel.channel_of"><code class="docutils literal notranslate"><span class="pre">SnapshotComponentModel.channel_of()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Snapshot.Snapshot.SnapshotComponentModel.on_pre_event"><code class="docutils literal notranslate"><span class="pre">SnapshotComponentModel.on_pre_event()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Snapshot.Snapshot.SnapshotComponentModel.send_msg"><code class="docutils literal notranslate"><span class="pre">SnapshotComponentModel.send_msg()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Snapshot.Snapshot.SnapshotComponentModel.msg_recv"><code class="docutils literal notranslate"><span class="pre">SnapshotComponentModel.msg_recv()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Snapshot.Snapshot.SnapshotComponentModel.send_gsu"><code class="docutils literal notranslate"><span class="pre">SnapshotComponentModel.send_gsu()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Snapshot.Snapshot.SnapshotComponentModel.gsu_recv"><code class="docutils literal notranslate"><span class="pre">SnapshotComponentModel.gsu_recv()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Snapshot.Snapshot.SnapshotComponentModel.on_gsu_recv"><code class="docutils literal notranslate"><span class="pre">SnapshotComponentModel.on_gsu_recv()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Snapshot.Snapshot.SnapshotComponentModel.on_take_snapshot"><code class="docutils literal notranslate"><span class="pre">SnapshotComponentModel.on_take_snapshot()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Snapshot.Snapshot.SnapshotComponentModel.take_snapshot"><code class="docutils literal notranslate"><span class="pre">SnapshotComponentModel.take_snapshot()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Snapshot.Snapshot.SnapshotComponentModel.on_message_from_bottom"><code class="docutils literal notranslate"><span class="pre">SnapshotComponentModel.on_message_from_bottom()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Snapshot.Snapshot.SnapshotComponentModel.on_message_from_peer"><code class="docutils literal notranslate"><span class="pre">SnapshotComponentModel.on_message_from_peer()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Snapshot.Snapshot.SnapshotComponentModel.on_message_from_top"><code class="docutils literal notranslate"><span class="pre">SnapshotComponentModel.on_message_from_top()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Snapshot.Snapshot.SnapshotComponentModel.reset_state"><code class="docutils literal notranslate"><span class="pre">SnapshotComponentModel.reset_state()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#Snapshot.Snapshot.SnapshotEventTypes"><code class="docutils literal notranslate"><span class="pre">SnapshotEventTypes</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#Snapshot.Snapshot.SnapshotEventTypes.TAKESNAPSHOT"><code class="docutils literal notranslate"><span class="pre">SnapshotEventTypes.TAKESNAPSHOT</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#Snapshot.Snapshot.SnapshotMessageTypes"><code class="docutils literal notranslate"><span class="pre">SnapshotMessageTypes</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#Snapshot.Snapshot.SnapshotMessageTypes.GLOBALSNAPSHOT"><code class="docutils literal notranslate"><span class="pre">SnapshotMessageTypes.GLOBALSNAPSHOT</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Snapshot.ChandyLamportSnapshot.html">Snapshot.ChandyLamportSnapshot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Snapshot.LaiYangSnapshot.html">Snapshot.LaiYangSnapshot</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Distributed Algorithm on AHCv2: distalgname</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../code.html">Code Documentation</a></li>
+      <li class="breadcrumb-item active">Snapshot.Snapshot</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-Snapshot.Snapshot">
+<span id="snapshot-snapshot"></span><h1>Snapshot.Snapshot<a class="headerlink" href="#module-Snapshot.Snapshot" title="Link to this heading"></a></h1>
+<p>Distributed Snapshot Algorithms</p>
+<p>This module implemenTAKESNAPSHOT Chandy Lamport and Lai Yang algorithms.</p>
+<p class="rubric">Classes</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+</tbody>
+</table>
+<dl class="py class">
+<dt class="sig sig-object py" id="Snapshot.Snapshot.SnapshotComponentModel">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Snapshot.Snapshot.</span></span><span class="sig-name descname"><span class="pre">SnapshotComponentModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">componentname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">componentinstancenumber</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">context</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">configurationparameters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_worker_threads</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">topology</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Snapshot/Snapshot.html#SnapshotComponentModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Snapshot.Snapshot.SnapshotComponentModel" title="Link to this definition"></a></dt>
+<dd><p>A generic snapshot component model to implement various snapshot algorithms.</p>
+<p>Extend SnapshotComponentModel to implement your own snapshot algorithm.</p>
+<p>Initializes the SnapshotComponentModel</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="Snapshot.Snapshot.SnapshotComponentModel.on_connected_to_component">
+<span class="sig-name descname"><span class="pre">on_connected_to_component</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">channel</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Snapshot/Snapshot.html#SnapshotComponentModel.on_connected_to_component"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Snapshot.Snapshot.SnapshotComponentModel.on_connected_to_component" title="Link to this definition"></a></dt>
+<dd><p>on_connected_to_component is an event to address the channels</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Snapshot.Snapshot.SnapshotComponentModel.channel_of">
+<span class="sig-name descname"><span class="pre">channel_of</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">eventobj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Snapshot/Snapshot.html#SnapshotComponentModel.channel_of"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Snapshot.Snapshot.SnapshotComponentModel.channel_of" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Snapshot.Snapshot.SnapshotComponentModel.on_pre_event">
+<span class="sig-name descname"><span class="pre">on_pre_event</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Snapshot/Snapshot.html#SnapshotComponentModel.on_pre_event"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Snapshot.Snapshot.SnapshotComponentModel.on_pre_event" title="Link to this definition"></a></dt>
+<dd><p>PreEvent Handler</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Snapshot.Snapshot.SnapshotComponentModel.send_msg">
+<span class="sig-name descname"><span class="pre">send_msg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Snapshot/Snapshot.html#SnapshotComponentModel.send_msg"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Snapshot.Snapshot.SnapshotComponentModel.send_msg" title="Link to this definition"></a></dt>
+<dd><p>Generic send message function</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Snapshot.Snapshot.SnapshotComponentModel.msg_recv">
+<span class="sig-name descname"><span class="pre">msg_recv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Snapshot/Snapshot.html#SnapshotComponentModel.msg_recv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Snapshot.Snapshot.SnapshotComponentModel.msg_recv" title="Link to this definition"></a></dt>
+<dd><p>Generic message received function</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Snapshot.Snapshot.SnapshotComponentModel.send_gsu">
+<span class="sig-name descname"><span class="pre">send_gsu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">local_state</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Snapshot/Snapshot.html#SnapshotComponentModel.send_gsu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Snapshot.Snapshot.SnapshotComponentModel.send_gsu" title="Link to this definition"></a></dt>
+<dd><p>Send GLOBALSNAPSHOT message</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Snapshot.Snapshot.SnapshotComponentModel.gsu_recv">
+<span class="sig-name descname"><span class="pre">gsu_recv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Snapshot/Snapshot.html#SnapshotComponentModel.gsu_recv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Snapshot.Snapshot.SnapshotComponentModel.gsu_recv" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Snapshot.Snapshot.SnapshotComponentModel.on_gsu_recv">
+<span class="sig-name descname"><span class="pre">on_gsu_recv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Snapshot/Snapshot.html#SnapshotComponentModel.on_gsu_recv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Snapshot.Snapshot.SnapshotComponentModel.on_gsu_recv" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Snapshot.Snapshot.SnapshotComponentModel.on_take_snapshot">
+<span class="sig-name descname"><span class="pre">on_take_snapshot</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Snapshot/Snapshot.html#SnapshotComponentModel.on_take_snapshot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Snapshot.Snapshot.SnapshotComponentModel.on_take_snapshot" title="Link to this definition"></a></dt>
+<dd><p>Generic report snapshot</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Snapshot.Snapshot.SnapshotComponentModel.take_snapshot">
+<span class="sig-name descname"><span class="pre">take_snapshot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">eventobj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Snapshot/Snapshot.html#SnapshotComponentModel.take_snapshot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Snapshot.Snapshot.SnapshotComponentModel.take_snapshot" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Snapshot.Snapshot.SnapshotComponentModel.on_message_from_bottom">
+<span class="sig-name descname"><span class="pre">on_message_from_bottom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">eventobj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Snapshot/Snapshot.html#SnapshotComponentModel.on_message_from_bottom"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Snapshot.Snapshot.SnapshotComponentModel.on_message_from_bottom" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Snapshot.Snapshot.SnapshotComponentModel.on_message_from_peer">
+<span class="sig-name descname"><span class="pre">on_message_from_peer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">eventobj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Snapshot/Snapshot.html#SnapshotComponentModel.on_message_from_peer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Snapshot.Snapshot.SnapshotComponentModel.on_message_from_peer" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Snapshot.Snapshot.SnapshotComponentModel.on_message_from_top">
+<span class="sig-name descname"><span class="pre">on_message_from_top</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">eventobj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Snapshot/Snapshot.html#SnapshotComponentModel.on_message_from_top"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Snapshot.Snapshot.SnapshotComponentModel.on_message_from_top" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Snapshot.Snapshot.SnapshotComponentModel.reset_state">
+<span class="sig-name descname"><span class="pre">reset_state</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Snapshot/Snapshot.html#SnapshotComponentModel.reset_state"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Snapshot.Snapshot.SnapshotComponentModel.reset_state" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="Snapshot.Snapshot.SnapshotEventTypes">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Snapshot.Snapshot.</span></span><span class="sig-name descname"><span class="pre">SnapshotEventTypes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">module</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qualname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boundary</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Snapshot/Snapshot.html#SnapshotEventTypes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Snapshot.Snapshot.SnapshotEventTypes" title="Link to this definition"></a></dt>
+<dd><p>Take snapshot event</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Snapshot.Snapshot.SnapshotEventTypes.TAKESNAPSHOT">
+<span class="sig-name descname"><span class="pre">TAKESNAPSHOT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'TAKESNAPSHOT'</span></em><a class="headerlink" href="#Snapshot.Snapshot.SnapshotEventTypes.TAKESNAPSHOT" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="Snapshot.Snapshot.SnapshotMessageTypes">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Snapshot.Snapshot.</span></span><span class="sig-name descname"><span class="pre">SnapshotMessageTypes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">module</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qualname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boundary</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Snapshot/Snapshot.html#SnapshotMessageTypes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#Snapshot.Snapshot.SnapshotMessageTypes" title="Link to this definition"></a></dt>
+<dd><dl class="py attribute">
+<dt class="sig sig-object py" id="Snapshot.Snapshot.SnapshotMessageTypes.GLOBALSNAPSHOT">
+<span class="sig-name descname"><span class="pre">GLOBALSNAPSHOT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'GLOBALSNAPSHOT'</span></em><a class="headerlink" href="#Snapshot.Snapshot.SnapshotMessageTypes.GLOBALSNAPSHOT" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../code.html" class="btn btn-neutral float-left" title="Code Documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Snapshot.ChandyLamportSnapshot.html" class="btn btn-neutral float-right" title="Snapshot.ChandyLamportSnapshot" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Your Name.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
