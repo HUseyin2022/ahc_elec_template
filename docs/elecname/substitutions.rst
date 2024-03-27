@@ -1,2 +1,2 @@
-.. |ElecName| replace:: Distributed Algorithm Name 
+.. |ElecName| replace:: Elective Distributed Algorithm 
 

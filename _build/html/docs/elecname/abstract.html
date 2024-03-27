@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Abstract &mdash; Distributed Algorithm on AHCv2: distalgname V1.0.0 documentation</title>
+  <title>Abstract &mdash; Distributed Algorithm on AHCv2: elecname V1.0.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=92fd9be5" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
 
@@ -35,7 +35,7 @@
           
           
           <a href="../../index.html" class="icon icon-home">
-            Distributed Algorithm on AHCv2: distalgname
+            Distributed Algorithm on AHCv2: elecname
           </a>
               <div class="version">
                 V1.0.0
@@ -53,7 +53,7 @@
 <li class="toctree-l1 current"><a class="reference internal" href="elecname.html">|DistAlgName|</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Abstract</a></li>
 <li class="toctree-l2"><a class="reference internal" href="introduction.html">Introduction</a></li>
-<li class="toctree-l2"><a class="reference internal" href="algorithm.html">|DistAlgName|</a></li>
+<li class="toctree-l2"><a class="reference internal" href="algorithm.html">Distributed Algorithm Name</a></li>
 <li class="toctree-l2"><a class="reference internal" href="results.html">Implementation, Results and Discussion</a></li>
 <li class="toctree-l2"><a class="reference internal" href="conclusion.html">Conclusion</a></li>
 </ul>
@@ -68,7 +68,7 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../index.html">Distributed Algorithm on AHCv2: distalgname</a>
+          <a href="../../index.html">Distributed Algorithm on AHCv2: elecname</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -88,7 +88,7 @@
              
   <section id="abstract">
 <h1>Abstract<a class="headerlink" href="#abstract" title="Link to this heading"></a></h1>
-<p>Write your abstract here.</p>
+<p>Write your abstract here. abstract</p>
 <p>An abstract summarizes, in one paragraph (usually), the major aspects of the entire paper/report in the following prescribed sequence [Anderson2016]:</p>
 <ul class="simple">
 <li><p>the question(s) you investigated (or purpose), (from Introduction)</p></li>
@@ -107,6 +107,10 @@
 <li><p>abbreviations or (mathematical) terms that may be confusing to readers,</p></li>
 <li><p>any sort of illustration, figure, or table, or references to them.</p></li>
 </ul>
+<p>In a distributed system, a leader is needed to provide coordination and execution the  on behalf of other entities in the system.  Leader Election is a process where we elect a leader/coordinator from the existing entitites in the network. Leader election is a required to improve efficiency and reduce coordination as well as operations.
+Synchronization can be costly in a big distributed system. When each entity in the network recognizes a unique node as the task leader, it will be possible to reduce the sysncronization cost. All entities in the network got informed after the election has taken place. There are various algorithms for leader election. All algorithms try to improve complexity. Algorithms for leader election var,ous according to communication mechanism, process name, network topology and size of network.
+A leader election algorithm for directed rings is Dolev-Klawe-Rodeh election algorithm. This election algorithm uses the identities of nodes.</p>
+<p>In this paper, we contribute by implementing both Dolev-Klawe-Rodeh and Echo with extinction Algorithms on the AHCv2 platform, investigating their performance across various scenarios, and conducting a comprehensive comparison to evaluate accuracy, overhead, complexity, and fault tolerance.</p>
 <div class="admonition-example admonition">
 <p class="admonition-title">EXAMPLE</p>
 <p>In the realm of snapshot algorithms for distributed systems, the main challenge lies in capturing a consistent global state without disrupting ongoing processes and minimizing overhead. This encompasses managing concurrency, ensuring accurate message ordering, providing fault tolerance, optimizing efficiency, and maintaining scalability. Successfully addressing these challenges is crucial for designing snapshot algorithms that accurately reflect the system’s state while preserving efficiency and resilience. Snapshot algorithms play a vital role in understanding and troubleshooting distributed systems, offering insights into system behavior, facilitating debugging, enabling efficient recovery from failures, and ensuring system correctness. Without such algorithms, diagnosing and resolving issues in distributed systems would be significantly hampered, potentially leading to increased downtime and inefficiencies. The Chandy-Lamport Algorithm, a key method for capturing consistent global snapshots, faces challenges in managing concurrency, ensuring accurate message ordering, and handling fault tolerance. Despite limitations such as increased message overhead and scalability concerns, it remains foundational in distributed systems research. In this paper, we contribute by implementing both the Chandy-Lamport and Lai-Yang Algorithms on the AHCv2 platform, investigating their performance across various scenarios, and conducting a comprehensive comparison to evaluate accuracy, overhead, complexity, and fault tolerance. SUMMARIZE MAIN LEARNING POINTS REFERING TO MAIN RESULTS!</p>
@@ -124,7 +128,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2024, Your Name.</p>
+    <p>&#169; Copyright 2024, Huseyin Sagirkaya.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
