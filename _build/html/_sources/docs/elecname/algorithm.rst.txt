@@ -1,6 +1,6 @@
 .. include:: substitutions.rst
 
-|DistAlgName|
+|ElecName|
 =========================================
 
 
@@ -10,7 +10,7 @@ Background and Related Work
 
 Present any background information survey the related work. Provide citations.
 
-Distributed Algorithm: |DistAlgName| 
+Distributed Algorithm: |ElecName| 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 An example distributed algorithm for broadcasting on an undirected graph is presented in  :ref:`Algorithm <BlindFloodingAlgorithmLabel>`.
@@ -54,30 +54,87 @@ Complexity
 
 Present theoretic complexity results in terms of number of messages and computational complexity.
 
+Election algorithm provides that each process has the same local algorithm, it is decentralized meaning a computation can be initialized by an arbitrary non empty subset of the process. The algorithm reaches a configuration defining one process is the state leader and others are state lost. 
+It is needed to be studied under assumptions such as the system is full y asynchronous and identified by a unique name.
+In this section, election algorithms, focusing on two ones: the Ring Election: Dolev-Klawe-Rodeh algorithm and the Echo algorithm with extinction algorithm. We will present the principles behind these algorithms, their implementation details, and compare their strengths and weaknesses.
+
+The Dolev-Klawe-Rodeh algorithm uses directed rings which messages cannot travel in both directions. Active process whose ID is p and next active neighbors are q and r. The Ids are collected at r. There are three cases to evaluate the election process.
+If p>q and r; r remains active and progress to the next election round
+if p<q or r; r becomes passive
+if p=q and r; r becomes the leader 
+
+In the algorithm processes need to keep track of the parity of their current round number.
 
 
-
-.. admonition:: EXAMPLE 
-
-    Snapshot algorithms are fundamental tools in distributed systems, enabling the capture of consistent global states during system execution. These snapshots provide insights into the system's behavior, facilitating various tasks such as debugging, recovery from failures, and monitoring for properties like deadlock or termination. In this section, we delve into snapshot algorithms, focusing on two prominent ones: the Chandy-Lamport algorithm and the Lai-Yang algorithm. We will present the principles behind these algorithms, their implementation details, and compare their strengths and weaknesses.
-
-    **Chandy-Lamport Snapshot Algorithm:**
-
-    The Chandy-Lamport :ref:`Algorithm <ChandyLamportSnapshotAlgorithm>` [Lamport1985]_ , proposed by Leslie Lamport and K. Mani Chandy, aims to capture a consistent global state of a distributed system without halting its execution. It operates by injecting markers into the communication channels between processes, which propagate throughout the system, collecting local states as they traverse. Upon reaching all processes, these markers signify the completion of a global snapshot. This algorithm requires FIFO channels. There are no failures and all messages arrive intact and only once. Any process may initiate the snapshot algorithm. The snapshot algorithm does not interfere with the normal execution of the processes. Each process in the system records its local state and the state of its incoming channels.
-
-    1. **Marker Propagation:** When a process initiates a snapshot, it sends markers along its outgoing communication channels.
-    2. **Recording Local States:** Each process records its local state upon receiving a marker and continues forwarding it.
-    3. **Snapshot Construction:** When a process receives markers from all incoming channels, it captures its local state along with the incoming messages as a part of the global snapshot.
-    4. **Termination Detection:** The algorithm ensures that all markers have traversed the system, indicating the completion of the snapshot.
-
-
-    .. _ChandyLamportSnapshotAlgorithm:
-
+    .. _DolevKlaweRodehAlgorithm:
+ 
     .. code-block:: RST
         :linenos:
-        :caption: Chandy-Lamport Snapshot Algorithm [Fokking2013]_.
+        :caption: Dolev-Klawe-Rodeh Algorithm [Fokking2013]_.
                 
-        bool recordedp, markerp[c] for all incoming channels c of p; 
+        bool Activep, leaderp, parityp;
+        proc election-idp, neighb-id[idp] for n=0,1 and Booleans b;
+
+        If p is an initiator
+
+        active ← true; election-id ← p;
+        send <id,p,0,b>;
+
+        If p receives <id,q,n,b>
+
+        if activep = true then
+        if n=0 then 
+           send <id,q,1,b>;
+        end if
+        neighb-idp[n,b]← q;
+        if neighb-idp[n,parityp] ≠ \bot  for n=0 and n=1 then
+           perform procedure CompareIdsp;
+        end if
+           send<id,q,n,b>;
+        end if
+
+        Procedure CompareIdsp
+        if max{election-idp,neighb-idp[1,parityp]}<neighb-idp[0,parityp] then
+           election-idp ← neighb-idp[0,parityp];
+           neighb-idp[n,parityp] ← ⊥ for n=0 and n=1; parityp ← ¬parityp;
+           send<id,election-idp,0,parityp>;
+           if neighb-idp[n,parityp] ≠ ⊥ for n=0 nad n=1 then
+              perform procedure CompareIdsp;
+           end if
+        else if neighb-idp[0,parityp] < election-idp then
+            activep←false;
+        else
+            leaderp←true;
+        end if
+        
+        Echo Algorithm
+
+        nat receivedp;
+        pro parentp;
+        If p is the iniaator
+        send<wave> to each r ∈ Neighborsp;
+        If p receives <wave> from a neighborr mess-queue
+        received ← receivedp+1;
+        if parentp= ⊥ and p is a noninitiator then
+            parentp←q;
+            if|Neighborsp|>1 then
+                send<wave> to each r ∈ Neighborsp \ {q};
+            else
+                send<wave> to q;
+            end if
+        else if receivedp = |Neighborsp| then
+            if parentp ≠ ⊥ then
+                send <wave> to parentp;
+            else
+                decide;
+            end if
+        end if
+        
+        
+        
+        
+        
+        markerp[c] for all incoming channels c of p; 
         mess-queue statep[c] for all incoming channels c of p;
 
         If p wants to initiate a snapshot 
