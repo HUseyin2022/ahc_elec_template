@@ -6,6 +6,8 @@ from adhoccomputing.GenericModel import GenericModel, Event, EventTypes, Generic
 from adhoccomputing.Generics import ConnectorTypes
 from adhoccomputing.Experimentation.Topology import Topology
 from random import randint
+import networkx as nx
+import matplotlib.pyplot as plt
 from enum import Enum
 import queue
 
@@ -15,233 +17,209 @@ class State(Enum):
     LEADER = 3
 
 class DolevKlaweRodehNode:
-    def __init__(self, name, instance_number, ring_size):
-        self.name = name
+    def __init__(self, instance_number, ring_size, nodes):
         self.instance_number = instance_number
         self.ring_size = ring_size
-        self.id_p = 0
+        self.id_p = instance_number
         self.state = State.ACTIVE
-        self.election_round = 1
-        self.neighbour_id = None
-        self.input_queue = queue.Queue()
+        self.nodes = nodes
+        self.highest_id_seen = self.id_p
 
     def on_init(self):
-        self.id_p = hash(f"{self.name}-{self.instance_number}") % self.ring_size
-        print(f"Node {self.name}-{self.instance_number} selected {self.id_p} as their ID for round {self.election_round}")
-        self.neighbour_id = (self.instance_number + 1) % self.ring_size
-
-    def handle_event(self, event):
-        event_name = event['event']
-        if event_name == 'init':
-            self.on_init()
-        elif event_name == 'start_election':
-            self.start_election()
-        elif event_name == 'receive_message':  # Added for message reception
-            self.receive_message(event['message'])  # Call receive_message with the message
+        print(f"Node {self.instance_number} initialized with alias {self.id_p}")
 
     def start_election(self):
-        if self.state == State.ACTIVE:
-            message = {
-                "source": f"{self.name}-{self.instance_number}",
-                "round": self.election_round,
-                "id_p": self.id_p
-            }
-            self.send_peer(message)
+        self.send_message(self.highest_id_seen)
 
-    def send_peer(self, message):
-        # Assuming a method to send message to peers
-        pass
+    def send_message(self, alias):
+        next_node_index = (self.instance_number + 1) % self.ring_size
+        next_node = self.nodes[next_node_index]
+        print(f"Node {self.instance_number} (ID: {self.id_p}) sending alias to Node {next_node.instance_number}")
+        next_node.receive_message(alias, self.instance_number)
 
-    def receive_message(self, message):
-        if self.state != State.LEADER:
-            if message["round"] > self.election_round or (message["round"] == self.election_round and message["id_p"] > self.id_p):
-                self.state = State.PASSIVE
-                self.id_p = " "
-                self.election_round += 1
-                self.start_election()
-            elif message["round"] == self.election_round and message["id_p"] < self.id_p:
-                return
-            elif message["round"] == self.election_round and message["id_p"] == self.id_p:
-                self.state = State.LEADER
-                print(f"Node {self.name}-{self.instance_number} is the elected leader.")
+    def receive_message(self, alias, sender_id):
+        print(f"Node {self.instance_number} (ID: {self.id_p}) received alias {alias} from Node {sender_id}")
+        if alias > self.highest_id_seen:
+            self.highest_id_seen = alias
+            self.state = State.PASSIVE
+        if alias == self.id_p and self.highest_id_seen == self.id_p:
+            self.state = State.LEADER
+            print(f"Node {self.instance_number} is the elected leader.")
+        else:
+            self.send_message(self.highest_id_seen)
 
-# Experiment to elect a leader
-def elect_leader():
-    # Create nodes
-    node1 = DolevKlaweRodehNode("Node", 1, 5)
-    node2 = DolevKlaweRodehNode("Node", 2, 5)
-    node3 = DolevKlaweRodehNode("Node", 3, 5)
-    node4 = DolevKlaweRodehNode("Node", 4, 5)
-    node5 = DolevKlaweRodehNode("Node", 5, 5)
+def draw_ring_topology(nodes):
+    G = nx.DiGraph()
+    for node in nodes:
+        G.add_node(node.instance_number)
+        next_node_index = (node.instance_number + 1) % len(nodes)
+        G.add_edge(node.instance_number, next_node_index)
+    
+    pos = nx.circular_layout(G)
+    nx.draw(G, pos, with_labels=True, node_color='skyblue', edge_color='k', node_size=2000, arrowstyle='-|>', arrowsize=20)
+    plt.title("Unidirectional Ring Topology")
+    plt.show()
 
-    # Simulate events
-    events = [
-        {"event": "init"},
-        {"event": "start_election"},
-        {"event": "receive_message", "message": {"round": 1, "id_p": 4}},  # Example message
-    ]
+# Number of nodes in the ring
+ring_size = 5
 
-    for node in [node1, node2, node3, node4, node5]:
-        for event in events:
-            node.handle_event(event)
+# Create all nodes and set them to know each other
+nodes = [DolevKlaweRodehNode(i, ring_size, []) for i in range(ring_size)]
+for node in nodes:
+    node.nodes = nodes
 
+# Initialize all nodes
+for node in nodes:
+    node.on_init()
 
-# Execute the experiment
-elect_leader()
+# Start the election process for each node, simulating each sending an alias
+for node in nodes:
+    node.start_election()
 
-import networkx as nx
-import matplotlib.pyplot as plt
+# Draw the topology
+draw_ring_topology(nodes)
 
-# Create nodes
-nodes = [DolevKlaweRodehNode("Node", i, 5) for i in range(1, 6)]
+# After all messages have been processed
+for node in nodes:
+    if node.state == State.LEADER:
+        print(f"Leader is node {node.instance_number} with alias {node.highest_id_seen}")
+        break
+else:
+    print("No leader was elected.")
 
-# Define the connections between nodes
-edges = [(nodes[i - 1], nodes[i % 5]) for i in range(5)]
-
-# Create a graph
-G = nx.Graph()
-
-# Add nodes to the graph
-G.add_nodes_from(nodes)
-
-# Add edges to the graph
-G.add_edges_from(edges)
-
-# Draw the graph
-pos = nx.spring_layout(G)  # positions for all nodes
-
-# Draw nodes
-nx.draw_networkx_nodes(G, pos, node_size=700)
-
-# Draw edges
-nx.draw_networkx_edges(G, pos, edgelist=edges)
-
-# Draw labels
-labels = {node: f"{node.name}-{node.instance_number}" for node in nodes}
-nx.draw_networkx_labels(G, pos, labels, font_size=12)
-
-plt.title("Graph Representation of Nodes")
-plt.show()
 
 
 
 Echo Extinction Algorithm
 
-import time
-from adhoccomputing.GenericModel import GenericModel, Event, EventTypes, GenericMessage, GenericMessageHeader, GenericMessagePayload
-from adhoccomputing.Generics import ConnectorTypes
-from adhoccomputing.Experimentation.Topology import Topology
-from random import randint
+import networkx as nx
+import matplotlib.pyplot as plt
+from datetime import datetime
+from random import randint, choice, shuffle
+from threading import Thread, Lock
+from time import sleep
+from typing import List, Tuple
 from enum import Enum
-import queue
+
+
+def current_time() -> float:
+    return datetime.timestamp(datetime.now())
+
+class Message:
+    def __init__(self):
+        self.delay = current_time() + randint(0, 2000) / 1000
+
+    def has_arrived(self) -> bool:
+        return current_time() >= self.delay
+
+    def __str__(self):
+        return "<Message>"
+
+class WaveMessage(Message):
+    def __init__(self, highest_id):
+        super().__init__()
+        self.highest_id = highest_id
+
+    def __str__(self):
+        return f"<Wave, Highest ID: {self.highest_id}>"
 
 class State(Enum):
-    ACTIVE = 1
-    PASSIVE = 2
-    LEADER = 3
+    ACTIVE = 0
+    INACTIVE = 1
 
-class EchoNode:
-    def __init__(self, name, instance_number, ring_size):
-        self.name = name
-        self.instance_number = instance_number
-        self.ring_size = ring_size
-        self.id_p = 0
+class MessageManager:
+    def __init__(self):
+        self.messages = {}
+        self.lock = Lock()
+        self.active = True  # Initially active
+
+    def send_message(self, from_id: int, to_id: int, msg: Message):
+        with self.lock:
+            if to_id not in self.messages:
+                self.messages[to_id] = []
+            self.messages[to_id].append(msg)
+            print(f"Message sent from Process {from_id} to Process {to_id}: {msg}")
+
+    def receive_message(self, p_id: int):
+        with self.lock:
+            if p_id in self.messages and self.messages[p_id]:
+                for message in self.messages[p_id]:
+                    if message.has_arrived():
+                        self.messages[p_id].remove(message)
+                        print(f"Message received by Process {p_id}: {message}")
+                        return message
+            return None
+
+    def check_active(self):
+        with self.lock:
+            return any(self.messages.values())  # Check if there are any messages in transit
+
+class Process(Thread):
+    def __init__(self, process_id: int, neighbors, manager: MessageManager):
+        super().__init__()
+        self.process_id = process_id
+        self.neighbors = neighbors
+        self.manager = manager
+        self.state = State.INACTIVE
+        self.highest_id = process_id
+        self.tree_parent = None
+        self.tree_children = []
+
+    def run(self):
+        self.broadcast(WaveMessage(self.process_id))
         self.state = State.ACTIVE
-        self.election_round = 1
-        self.neighbour_id = None
-        self.leader = None
-        self.input_queue = queue.Queue()
 
-    def on_init(self):
-        self.id_p = hash(f"{self.name}-{self.instance_number}") % self.ring_size
-        print(f"Node {self.name}-{self.instance_number} selected {self.id_p} as their ID for round {self.election_round}")
-        self.neighbour_id = (self.instance_number + 1) % self.ring_size
+        while self.manager.check_active():  # Only continue if there are messages being processed
+            msg = self.manager.receive_message(self.process_id)
+            if msg and isinstance(msg, WaveMessage):
+                if msg.highest_id > self.highest_id:
+                    self.highest_id = msg.highest_id
+                    self.broadcast(WaveMessage(self.highest_id))
+                    # Update parent and children
+                    self.tree_parent = msg.highest_id
+                    self.tree_children = [neighbor for neighbor in self.neighbors if neighbor != self.tree_parent]
+            sleep(0.01)  # Sleep to reduce CPU usage
 
-    def handle_event(self, event):
-        event_name = event['event']
-        if event_name == 'init':
-            self.on_init()
-        elif event_name == 'start_election':
-            self.start_election()
-        elif event_name == 'receive_message':  # Added for message reception
-            self.receive_message(event['message'])  # Call receive_message with the message
+        self.state = State.INACTIVE
 
-    def start_election(self):
-        if self.state == State.ACTIVE:
-            message = {
-                "source": f"{self.name}-{self.instance_number}",
-                "round": self.election_round,
-                "id_p": self.id_p
-            }
-            self.send_peer(message)
+    def broadcast(self, message):
+        for neighbor in self.neighbors:
+            if neighbor != self.process_id:  # Prevent sending to self
+                self.manager.send_message(self.process_id, neighbor, message)
 
-    def send_peer(self, message):
-        # Assuming a method to send message to peers
-        pass
+def setup_processes(num_processes: int) -> Tuple[List[Process], MessageManager, nx.Graph]:
+    manager = MessageManager()
+    graph = nx.connected_watts_strogatz_graph(num_processes, 3, 0.5, seed=42)
+    processes = [Process(node, list(graph.adj[node]), manager) for node in graph.nodes()]
+    return processes, manager, graph
 
-    def receive_message(self, message):
-        if self.state != State.LEADER:
-            if message["round"] > self.election_round or (message["round"] == self.election_round and message["id_p"] > self.id_p):
-                self.state = State.PASSIVE
-                self.id_p = " "
-                self.election_round += 1
-                self.start_election()
-            elif message["round"] == self.election_round and message["id_p"] < self.id_p:
-                return
-            elif message["round"] == self.election_round and message["id_p"] == self.id_p:
-                self.state = State.LEADER
-                self.leader = f"{self.name}-{self.instance_number}"
+def draw_graph(graph, title):
+    pos = nx.spring_layout(graph)
+    nx.draw(graph, pos, with_labels=True, node_color='lightblue', edge_color='black', node_size=500)
+    plt.title(title)
+    plt.show()
 
-# Function to check and print the leader
-def print_leader(nodes):
-    for node in nodes:
-        if node.state == State.LEADER:
-            print("Elected leader:", node.name, node.instance_number)
+def draw_tree(processes):
+    G = nx.Graph()
+    for process in processes:
+        if process.tree_parent is not None:
+            G.add_edge(process.process_id, process.tree_parent)
+    pos = nx.spring_layout(G)
+    nx.draw(G, pos, with_labels=True, node_color='lightgreen', edge_color='black', node_size=500)
+    plt.title("Output Tree Graph")
+    plt.show()
 
-# Experiment to elect a leader
-def elect_leader():
-    # Create nodes
-    node1 = EchoNode("Node", 1, 5)
-    node2 = EchoNode("Node", 2, 5)
-    node3 = EchoNode("Node", 3, 5)
-    node4 = EchoNode("Node", 4, 5)
-    node5 = EchoNode("Node", 5, 5)
+def run_simulation(num_processes: int):
+    processes, manager, graph = setup_processes(num_processes)
+    draw_graph(graph, "Initial Network Topology")
+    for process in processes:
+        process.start()
+    for process in processes:
+        process.join()
 
-    # Simulate events
-    events = [
-        {"event": "init"},
-        {"event": "start_election"},
-        {"event": "receive_message", "message": {"round": 1, "id_p": 4}},  # Example message
-    ]
+    leader_id = max((p.highest_id for p in processes), default=None)
+    print(f"The elected leader is Process {leader_id}")
+    
+    draw_tree(processes)
 
-    # Handle events for each node
-    for node in [node1, node2, node3, node4, node5]:
-        for event in events:
-            node.handle_event(event)
-
-    # Print the elected leader
-    print_leader([node1, node2, node3, node4, node5])
-
-# Execute the experiment
-elect_leader()
-nodes = ["Node1", "Node2", "Node3", "Node4", "Node5"]
-
-import matplotlib.pyplot as plt
-import networkx as nx
-
-# Define the edges (connections between nodes)
-edges = [("Node1", "Node2"), ("Node2", "Node3"), ("Node3", "Node4"), ("Node4", "Node5"), ("Node5", "Node1")]
-
-# Create a graph object
-G = nx.Graph()
-
-# Add nodes to the graph
-G.add_nodes_from(nodes)
-
-# Add edges to the graph
-G.add_edges_from(edges)
-
-# Draw the graph
-nx.draw(G, with_labels=True, node_size=1000, node_color="skyblue", font_size=12, font_weight="bold", pos=nx.spring_layout(G))
-plt.title("Graph Representation of Nodes")
-plt.show()
+run_simulation(8)  # Running the simulation with 8 processes
