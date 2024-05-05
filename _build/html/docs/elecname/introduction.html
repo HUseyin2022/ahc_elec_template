@@ -22,7 +22,7 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Distributed Algorithm Name" href="algorithm.html" />
+    <link rel="next" title="Elective Distributed Algorithm" href="algorithm.html" />
     <link rel="prev" title="Abstract" href="abstract.html" /> 
 </head>
 
@@ -50,15 +50,14 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="elecname.html">|DistAlgName|</a><ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="elecname.html">Elective Distributed Algorithm</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="abstract.html">Abstract</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Introduction</a></li>
-<li class="toctree-l2"><a class="reference internal" href="algorithm.html">Distributed Algorithm Name</a></li>
+<li class="toctree-l2"><a class="reference internal" href="algorithm.html">Elective Distributed Algorithm</a></li>
 <li class="toctree-l2"><a class="reference internal" href="results.html">Implementation, Results and Discussion</a></li>
 <li class="toctree-l2"><a class="reference internal" href="conclusion.html">Conclusion</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../rubric.html">Assessment Rubric</a></li>
 <li class="toctree-l1"><a class="reference internal" href="code.html">Code Documentation</a></li>
 </ul>
 
@@ -76,7 +75,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="elecname.html">|DistAlgName|</a></li>
+          <li class="breadcrumb-item"><a href="elecname.html">Elective Distributed Algorithm</a></li>
       <li class="breadcrumb-item active">Introduction</li>
       <li class="wy-breadcrumbs-aside">
       </li>
@@ -88,17 +87,31 @@
              
   <section id="introduction">
 <h1>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h1>
-<p>Leader election is neccessary for fault tolerant services in asynchronous distributed systems. Leader solves consensus problem, provide fault tolerant and system resilience. The election algorithms provide the coordinator in order to serve a unique coordinator among a group of entity. Distributed algorithms need a process to act coordinator in centralized mutual exclusion or deadlock detection. Selection a leader ensures continuous coordination between entitties.
+<p>Leader election is necessary for fault tolerant services in asynchronous distributed systems. Leader solves consensus problem, provide fault tolerant and system resilience. The election algorithms provide the coordinator in order to serve a unique coordinator among a group of entity. Distributed algorithms need a process to act coordinator in centralized mutual exclusion or deadlock detection. Selection a leader ensures continuous coordination between entities.
 These algorithms also provide a means to recover from failures of the coordinator. However leader selection can cause network congestion in large scale distributed systems since processes change message very often.</p>
 <p>If current leader becomes unavailable, the algorithm provides a leader for the entities. A new leader is decided based on the availability, node priority or a unique identifier to each active process.
 The goal of election algorithms to conclude all process agree on the new coordinator.</p>
-<p>LEader election in distributed systems has challenges such as network communication, node failures, concurrent elections, scalability, synchronization and byzantine failures.</p>
+<p>Leader election in distributed systems has challenges such as network communication, node failures, concurrent elections, scalability, synchronization and byzantine failures. The algorithms differ considering the types of messages to be used, system architecture, its working structure, worst case number of messages.</p>
+<p>The Dolev-Klawe-Rodeh algorithm is a unidirectional ring network in which the channels characteristics are FIFO (i.e., on each channel, messages are received in their sending order).
+The ring topology is a network configuration where each entity is connected  to its adjacent entity from both sides.In ring topology, every entity has two neighbors, one on its right and one on its left. For a ring, there are different types of leader election algorithms depending on the type of ring network implementation. For instance, a ring can be bidirectional or unidirectional, asynchronous or synchronous, and with unique identities or an anonymous network.
+The type of channel communication is also important. FIFO or non FIFO channels can be implemented meaning the order of messages is preserved in FIFO channels and non FIFO channels provide messages which may not be received in the exact order they have been sent.</p>
+<p>The direction of messages sent is needed to be considered in designing the algorithm. The direction can be bidirectional or unidirectional. In a bidirectional ring, messages can be ssent in both opposite directions in the ring.</p>
+<p>The algorithm presented by D. Dolev, M. Klawe, and M.Rodeh (1982). All processes compete to be elected as a leader, and execute consecutive rounds to that end. During each round, at most half of the processes that are competitors remain competitors during the next
+round. Hence, there will be at most O(log2 n) rounds. The number of messages sent by the algorithm is at most 2n log n+n.
+With this properties the ring algorithm is less complex and more scalable when the number of processes is small.
+It requires less resources for communication since the messages are shared among the processes connected in the ring.</p>
+<p>Various election algorithms have been proposed for the leader election. Bully Algorithm has been presented by Gracia-Molina in 1982.
+But its disadvantage is it requires that every process should know the identity of every other process. So it increases traffic. The message passing has order O(N2).
+There are also various ring election algorithms. The Chang-Robert algorithm targets a directed ring. The idea is that only the message with highset ID completes the trip. The worst case message coplexity of the algorithm is O(N2)
+On the other hand Franklin uses an bidirctional ring to improve worst case message complexity. The worst case message complexity of Franklin’s algorithm is O(N logN).</p>
+<p>Dolew Klawe Rodeh algorithm changes the Franklins algorithm to unidirectional ring meaning a message cannot travel in both direction. Its complexity is the same as Franklins algorithm.</p>
+<p>Echo algorithm with extinction can work for any topology. The Echo Algorithm facilitates the selection of a leader or coordinator among the processes in a distributed system.</p>
 <p>Our primary contributions consist of the following:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p>Implementation of both the Ring Election: Dolev-Klawe-Rodeh algorithm and Election: Echo algorithm with extinction Algorithm on the AHCv2 platform. The implementation specifics are detailed in Section XX.</p></li>
-<li><p>Examination of the performance of these algorithms across diverse topologies and usage scenarios. Results from these investigations are outlined in Section XXX.</p></li>
-<li><p>Comprehensive comparison and contrast of the algorithms based on criteria such as accuracy, overhead, complexity, and fault tolerance. Key insights derived from these comparisons are elaborated upon in Section XXXX.</p></li>
+<li><p>Implementation of both the Ring Election: Dolev-Klawe-Rodeh algorithm and Election: Echo algorithm with extinction Algorithm on the AHCv2 platform.</p></li>
+<li><p>Examination of the performance of these algorithms across diverse topologies and usage scenarios.</p></li>
+<li><p>Comprehensive comparison and contrast of the algorithms based on criteria such as accuracy, overhead, complexity, and fault tolerance.</p></li>
 </ul>
 </div></blockquote>
 </section>
@@ -108,7 +121,7 @@ The goal of election algorithms to conclude all process agree on the new coordin
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="abstract.html" class="btn btn-neutral float-left" title="Abstract" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="algorithm.html" class="btn btn-neutral float-right" title="Distributed Algorithm Name" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="algorithm.html" class="btn btn-neutral float-right" title="Elective Distributed Algorithm" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

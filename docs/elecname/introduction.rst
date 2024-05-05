@@ -3,7 +3,7 @@
 Introduction
 ============
 
-Leader election is necessary for fault tolerant services in asynchronous distributed systems. Leader solves consensus problem, provide fault tolerant and system resilience. The election algorithms provide the coordinator in order to serve a unique coordinator among a group of entity. Distributed algorithms need a process to act coordinator in centralized mutual exclusion or deadlock detection. Selection a leader ensures continuous coordination between entitties. 
+Leader election is necessary for fault tolerant services in asynchronous distributed systems. Leader solves consensus problem, provide fault tolerant and system resilience. The election algorithms provide the coordinator in order to serve a unique coordinator among a group of entity. Distributed algorithms need a process to act coordinator in centralized mutual exclusion or deadlock detection. Selection a leader ensures continuous coordination between entities. 
 These algorithms also provide a means to recover from failures of the coordinator. However leader selection can cause network congestion in large scale distributed systems since processes change message very often.
 
 If current leader becomes unavailable, the algorithm provides a leader for the entities. A new leader is decided based on the availability, node priority or a unique identifier to each active process.

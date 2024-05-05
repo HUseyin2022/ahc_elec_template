@@ -6,4 +6,7 @@ Abstract
 In a distributed system, a leader is needed to provide coordination and execution the  on behalf of other entities in the system.  Leader Election is a process where we elect a leader/coordinator from the existing entitites in the network. Leader election is a required to improve efficiency and reduce coordination as well as operations.
 Synchronization can be costly in a big distributed system. When each entity in the network recognizes a unique node as the task leader, it will be possible to reduce the sysncronization cost. All entities in the network got informed after the election has taken place. There are various algorithms for leader election. All algorithms try to improve complexity. Algorithms for leader election various according to communication mechanism, process name, network topology and size of network.
 There are different types of leader election algorithms for different network topologies. The network can have a ring topology, tree topology, star topology, bus topology, and other topologies.
-=======
+
+In this paper, we contribute by implementing both Dolev-Klawe-Rodeh and Echo with extinction Algorithms on the AHCv2 platform, investigating their performance across various scenarios, and conducting a comprehensive comparison to evaluate accuracy, overhead, complexity, and fault tolerance.
+
+In the realm of Elective algorithms for distributed systems, the major design challenge is the network delay during the election process, also the definiton of the process if there is a failure of an entitty.

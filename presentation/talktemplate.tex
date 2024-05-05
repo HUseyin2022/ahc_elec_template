@@ -29,13 +29,13 @@
 \algnewcommand{\Trigger}[1]{\Statex{\textbf{Trigger:} (#1)}}%
 \algnewcommand{\Events}[1]{\item[\textbf{Events:}] #1}%
 \algnewcommand{\Need}[1]{\item[\textbf{Needs:}] #1}%
-\algnewcommand{\Event}[2]{\Statex \item[\textbf{On#1:}](#2) \textbf{do}}%
+\algnewcommand{\Event}[2]{\Statex\item[\textbf{On#1:}](#2) \textbf{do}}%
 \algnewcommand{\Trig}[3]{\State \textbf{Trigger}  #1.#2 (#3) }%
 \def\true{\textbf{T}}
 \def\false{\textbf{F}}
 
 
-\author[John Doe]{John Doe\\\href{mailto:john@example.com}{john@example.com}}
+\author[HUS]{HUS\\\href{mailto:john@example.com}{john@example.com}}
 %\author[J.\,Doe \& J.\,Doe]
 %{%
 %  \texorpdfstring{
@@ -182,7 +182,6 @@ Blind flooding on an undirected graph is presented in Algorithm~\ref{alg:blindfl
 	\scriptsize
 	\def\algorithmlabel{BlindFlooding}
     \caption{\algorithmlabel\ algorithm}
-    \label{alg:blindflooding}
     \begin{algorithmic}[1]
     	\Implement {\algorithmlabel}{cf} 
     	\Use {LinkLayerBroadcast} {lbc} 
@@ -264,12 +263,11 @@ Better to present 10\% the entire audience gets than 90\% nobody gets
 \begin{frame}
 \frametitle{Conclusions}
 \framesubtitle{Hindsight is Clearer than Foresight}
-Advices come from \cite{spillman2000present}.
 \begin{itemize}
 \item You can now make observations that would have been confusing if they were introduced earlier. Use this opportunity to refer to statements that you have made in the previous three sections and weave them into a coherent synopsis. You will regain the attention of the non- experts, who probably didn’t follow all of the Technicalities section. Leave them feeling that they have learned something nonetheless.
 \item Give Open Problems It is traditional to end with a list of open problems that arise from your paper. Mention weaknesses of your paper, possible generalizations, and indications of whether they will be fruitful or not. This way you may defuse antagonistic questions during question time.
 \item Indicate that your Talk is Over
-An acceptable way to do this is to say “Thank-you. Are there any questions?”\cite{einstein}
+An acceptable way to do this is to say “Thank-you. Are there any questions?”
 \end{itemize}
 
 \end{frame}
