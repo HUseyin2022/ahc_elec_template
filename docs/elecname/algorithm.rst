@@ -57,6 +57,18 @@ The Dolev-Klawe-Rodeh :ref:`Algorithm <DolevKlaweRodehAlgorithm>` [Raynal2013]_ 
         when ELECTED(id1, id2) is received do
              leaderi ←id1; donei ←true; electedi ←(id1 = idi);
              if (id2 != idi ) then send ELECTED(id1, id2) end if.
+Processes  communicate  with  alias  (which  can  change  from  round  toround), unique leader with largest alias ID 
+Nodes:  active, passive (=forward)
+Each node has variablealias(i) to keep track of its alias
+Algorithm Outline
+Sends alias to successor
+Receives alias from predecessor in ring:  alias (PD)
+If alias = alias PD: node i is leader
+Else:
+Send alias PD to successor
+Receives alias from predecessor of its predecessor:  alias (PD2)
+If alias (PD)>max (alias, alias(PD2)):  alias = alias (PD), node i remains active andmoves to next round
+else:  node i turns passive
 
 **Correctness:**
     
