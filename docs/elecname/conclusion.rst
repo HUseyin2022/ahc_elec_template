@@ -30,6 +30,7 @@ The DKR algorithm is effective in ring-based networks with potentially large IDs
 
 
 Echo with Extinction (EwE) Algorithm
+
 Strengths:
 Message Complexity: EwE algorithm achieves a low message complexity of  O(n) in the average case, making it highly efficient in terms of message passing.
 Deterministic: Similar to other ring-based leader election algorithms, EwE guarantees the selection of a leader in a deterministic manner, based on the ordering of node IDs.
