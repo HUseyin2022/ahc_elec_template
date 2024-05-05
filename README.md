@@ -22,7 +22,7 @@ There are some issues you have to address before starting implementation, please
 
 
 - Rename the keyword `distalgname` in any foldername (/distalgname and /docs/disalgname), in any filenames (docs/distalgname/distalgname.rst) and in any fields in any file (all instances in index.rst) to a **meaningfull abbreviation** of your distributed algorithm. Note that doc/substitutions.rst defines a keywork |DistAlgName| that has to be changed as well.
-- Use restructured text for documentation. There is a conf.py and the associated Makefile in the project's root directory. Running``make`` in the project's root directory will provide you a guide on how to build the html, pdf, epub, etc. documentation. For example, run `make html` and open `index.html`  under `_build/html` with a browser.
+- Use restructured text for documentation. There is a conf.py and the associated Makefile in the project's root directory. Running``make `` in the project's root directory will provide you a guide on how to build the html, pdf, epub, etc. documentation. For example, run `make html` and open `index.html`  under `_build/html` with a browser.
 - Do not edit anything in `_build`, `_static`, `_templates` directories.  
 - In `conf.py`  edit `project, copyright, author, release` fields.
 
