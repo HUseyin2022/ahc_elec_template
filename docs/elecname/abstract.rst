@@ -9,4 +9,4 @@ There are different types of leader election algorithms for different network to
 
 In this paper, we contribute by implementing both Dolev-Klawe-Rodeh and Echo with extinction Algorithms on the AHCv2 platform, investigating their performance across various scenarios, and conducting a comprehensive comparison to evaluate accuracy, overhead, complexity, and fault tolerance.
 
-In the realm of Elective algorithms for distributed systems, the major design challenge is the network delay during the election process, also the definiton of the process if there is a failure of an entity.
+In the realm of Elective algorithms for distributed systems, the major design challenge is the network delay during the election process, also the definiton of the process if there is a failure of an entitty.
