@@ -26,27 +26,320 @@ In Echo Extinction algorithm, the State enum has been extended to include the EC
 Results
 ~~~~~~~~
 DolevKlaweRodeh algorithm
-Node Node-1 selected 4 as their ID for round 1
-Node Node-1 is the elected leader.
-Node Node-2 selected 4 as their ID for round 1
-Node Node-2 is the elected leader.
-Node Node-3 selected 3 as their ID for round 1
-Node Node-4 selected 0 as their ID for round 1
-Node Node-5 selected 2 as their ID for round 1
+Node 0 initialized with alias 0
+Node 1 initialized with alias 1
+Node 2 initialized with alias 2
+Node 3 initialized with alias 3
+Node 4 initialized with alias 4
+Node 5 initialized with alias 5
+Node 6 initialized with alias 6
+Node 7 initialized with alias 7
+Node 0 (ID: 0) sending alias to Node 1
+Node 1 (ID: 1) received alias 0 from Node 0
+Node 1 (ID: 1) sending alias to Node 2
+Node 2 (ID: 2) received alias 1 from Node 1
+Node 2 (ID: 2) sending alias to Node 3
+Node 3 (ID: 3) received alias 2 from Node 2
+Node 3 (ID: 3) sending alias to Node 4
+Node 4 (ID: 4) received alias 3 from Node 3
+Node 4 (ID: 4) sending alias to Node 5
+Node 5 (ID: 5) received alias 4 from Node 4
+Node 5 (ID: 5) sending alias to Node 6
+Node 6 (ID: 6) received alias 5 from Node 5
+Node 6 (ID: 6) sending alias to Node 7
+Node 7 (ID: 7) received alias 6 from Node 6
+Node 7 (ID: 7) sending alias to Node 0
+Node 0 (ID: 0) received alias 7 from Node 7
+Node 0 (ID: 0) sending alias to Node 1
+Node 1 (ID: 1) received alias 7 from Node 0
+Node 1 (ID: 1) sending alias to Node 2
+Node 2 (ID: 2) received alias 7 from Node 1
+Node 2 (ID: 2) sending alias to Node 3
+Node 3 (ID: 3) received alias 7 from Node 2
+Node 3 (ID: 3) sending alias to Node 4
+Node 4 (ID: 4) received alias 7 from Node 3
+Node 4 (ID: 4) sending alias to Node 5
+Node 5 (ID: 5) received alias 7 from Node 4
+Node 5 (ID: 5) sending alias to Node 6
+Node 6 (ID: 6) received alias 7 from Node 5
+Node 6 (ID: 6) sending alias to Node 7
+Node 7 (ID: 7) received alias 7 from Node 6
+Node 7 is the elected leader.
+Node 1 (ID: 1) sending alias to Node 2
+Node 2 (ID: 2) received alias 7 from Node 1
+Node 2 (ID: 2) sending alias to Node 3
+Node 3 (ID: 3) received alias 7 from Node 2
+Node 3 (ID: 3) sending alias to Node 4
+Node 4 (ID: 4) received alias 7 from Node 3
+Node 4 (ID: 4) sending alias to Node 5
+Node 5 (ID: 5) received alias 7 from Node 4
+Node 5 (ID: 5) sending alias to Node 6
+Node 6 (ID: 6) received alias 7 from Node 5
+Node 6 (ID: 6) sending alias to Node 7
+Node 7 (ID: 7) received alias 7 from Node 6
+Node 7 is the elected leader.
+Node 2 (ID: 2) sending alias to Node 3
+Node 3 (ID: 3) received alias 7 from Node 2
+Node 3 (ID: 3) sending alias to Node 4
+Node 4 (ID: 4) received alias 7 from Node 3
+Node 4 (ID: 4) sending alias to Node 5
+Node 5 (ID: 5) received alias 7 from Node 4
+Node 5 (ID: 5) sending alias to Node 6
+Node 6 (ID: 6) received alias 7 from Node 5
+Node 6 (ID: 6) sending alias to Node 7
+Node 7 (ID: 7) received alias 7 from Node 6
+Node 7 is the elected leader.
+Node 3 (ID: 3) sending alias to Node 4
+Node 4 (ID: 4) received alias 7 from Node 3
+Node 4 (ID: 4) sending alias to Node 5
+Node 5 (ID: 5) received alias 7 from Node 4
+Node 5 (ID: 5) sending alias to Node 6
+Node 6 (ID: 6) received alias 7 from Node 5
+Node 6 (ID: 6) sending alias to Node 7
+Node 7 (ID: 7) received alias 7 from Node 6
+Node 7 is the elected leader.
+Node 4 (ID: 4) sending alias to Node 5
+Node 5 (ID: 5) received alias 7 from Node 4
+Node 5 (ID: 5) sending alias to Node 6
+Node 6 (ID: 6) received alias 7 from Node 5
+Node 6 (ID: 6) sending alias to Node 7
+Node 7 (ID: 7) received alias 7 from Node 6
+Node 7 is the elected leader.
+Node 5 (ID: 5) sending alias to Node 6
+Node 6 (ID: 6) received alias 7 from Node 5
+Node 6 (ID: 6) sending alias to Node 7
+Node 7 (ID: 7) received alias 7 from Node 6
+Node 7 is the elected leader.
+Node 6 (ID: 6) sending alias to Node 7
+Node 7 (ID: 7) received alias 7 from Node 6
+Node 7 is the elected leader.
+Node 7 (ID: 7) sending alias to Node 0
+Node 0 (ID: 0) received alias 7 from Node 7
+Node 0 (ID: 0) sending alias to Node 1
+Node 1 (ID: 1) received alias 7 from Node 0
+Node 1 (ID: 1) sending alias to Node 2
+Node 2 (ID: 2) received alias 7 from Node 1
+Node 2 (ID: 2) sending alias to Node 3
+Node 3 (ID: 3) received alias 7 from Node 2
+Node 3 (ID: 3) sending alias to Node 4
+Node 4 (ID: 4) received alias 7 from Node 3
+Node 4 (ID: 4) sending alias to Node 5
+Node 5 (ID: 5) received alias 7 from Node 4
+Node 5 (ID: 5) sending alias to Node 6
+Node 6 (ID: 6) received alias 7 from Node 5
+Node 6 (ID: 6) sending alias to Node 7
+Node 7 (ID: 7) received alias 7 from Node 6
+Node 7 is the elected leader.
+Total messages sent: 44
+Total messages received: 44
+Leader is node 7 with alias 7
 
     .. image:: figures/Screen4.jpg
       :width: 400 
 
 Echo Extinction algorithm
-Node Node-1 selected 0 as their ID for round 1
-Node Node-2 selected 4 as their ID for round 1
-Node Node-3 selected 1 as their ID for round 1
-Node Node-4 selected 1 as their ID for round 1
-Node Node-5 selected 1 as their ID for round 1
-Elected leader: Node 2
+Node 0 initialized with alias 0
+Node 1 initialized with alias 1
+Node 2 initialized with alias 2
+Node 3 initialized with alias 3
+Node 4 initialized with alias 4
+Node 5 initialized with alias 5
+Node 6 initialized with alias 6
+Node 7 initialized with alias 7
+Node 0 (ID: 0) sending alias to Node 1
+Node 1 (ID: 1) received alias 0 from Node 0
+Node 1 (ID: 1) sending alias to Node 2
+Node 2 (ID: 2) received alias 1 from Node 1
+Node 2 (ID: 2) sending alias to Node 3
+Node 3 (ID: 3) received alias 2 from Node 2
+Node 3 (ID: 3) sending alias to Node 4
+Node 4 (ID: 4) received alias 3 from Node 3
+Node 4 (ID: 4) sending alias to Node 5
+Node 5 (ID: 5) received alias 4 from Node 4
+Node 5 (ID: 5) sending alias to Node 6
+Node 6 (ID: 6) received alias 5 from Node 5
+Node 6 (ID: 6) sending alias to Node 7
+Node 7 (ID: 7) received alias 6 from Node 6
+Node 7 (ID: 7) sending alias to Node 0
+Node 0 (ID: 0) received alias 7 from Node 7
+Node 0 (ID: 0) sending alias to Node 1
+Node 1 (ID: 1) received alias 7 from Node 0
+Node 1 (ID: 1) sending alias to Node 2
+Node 2 (ID: 2) received alias 7 from Node 1
+Node 2 (ID: 2) sending alias to Node 3
+Node 3 (ID: 3) received alias 7 from Node 2
+Node 3 (ID: 3) sending alias to Node 4
+Node 4 (ID: 4) received alias 7 from Node 3
+Node 4 (ID: 4) sending alias to Node 5
+Node 5 (ID: 5) received alias 7 from Node 4
+Node 5 (ID: 5) sending alias to Node 6
+Node 6 (ID: 6) received alias 7 from Node 5
+Node 6 (ID: 6) sending alias to Node 7
+Node 7 (ID: 7) received alias 7 from Node 6
+Node 7 is the elected leader.
+Node 1 (ID: 1) sending alias to Node 2
+Node 2 (ID: 2) received alias 7 from Node 1
+Node 2 (ID: 2) sending alias to Node 3
+Node 3 (ID: 3) received alias 7 from Node 2
+Node 3 (ID: 3) sending alias to Node 4
+Node 4 (ID: 4) received alias 7 from Node 3
+Node 4 (ID: 4) sending alias to Node 5
+Node 5 (ID: 5) received alias 7 from Node 4
+Node 5 (ID: 5) sending alias to Node 6
+Node 6 (ID: 6) received alias 7 from Node 5
+Node 6 (ID: 6) sending alias to Node 7
+Node 7 (ID: 7) received alias 7 from Node 6
+Node 7 is the elected leader.
+Node 2 (ID: 2) sending alias to Node 3
+Node 3 (ID: 3) received alias 7 from Node 2
+Node 3 (ID: 3) sending alias to Node 4
+Node 4 (ID: 4) received alias 7 from Node 3
+Node 4 (ID: 4) sending alias to Node 5
+Node 5 (ID: 5) received alias 7 from Node 4
+Node 5 (ID: 5) sending alias to Node 6
+Node 6 (ID: 6) received alias 7 from Node 5
+Node 6 (ID: 6) sending alias to Node 7
+Node 7 (ID: 7) received alias 7 from Node 6
+Node 7 is the elected leader.
+Node 3 (ID: 3) sending alias to Node 4
+Node 4 (ID: 4) received alias 7 from Node 3
+Node 4 (ID: 4) sending alias to Node 5
+Node 5 (ID: 5) received alias 7 from Node 4
+Node 5 (ID: 5) sending alias to Node 6
+Node 6 (ID: 6) received alias 7 from Node 5
+Node 6 (ID: 6) sending alias to Node 7
+Node 7 (ID: 7) received alias 7 from Node 6
+Node 7 is the elected leader.
+Node 4 (ID: 4) sending alias to Node 5
+Node 5 (ID: 5) received alias 7 from Node 4
+Node 5 (ID: 5) sending alias to Node 6
+Node 6 (ID: 6) received alias 7 from Node 5
+Node 6 (ID: 6) sending alias to Node 7
+Node 7 (ID: 7) received alias 7 from Node 6
+Node 7 is the elected leader.
+Node 5 (ID: 5) sending alias to Node 6
+Node 6 (ID: 6) received alias 7 from Node 5
+Node 6 (ID: 6) sending alias to Node 7
+Node 7 (ID: 7) received alias 7 from Node 6
+Node 7 is the elected leader.
+Node 6 (ID: 6) sending alias to Node 7
+Node 7 (ID: 7) received alias 7 from Node 6
+Node 7 is the elected leader.
+Node 7 (ID: 7) sending alias to Node 0
+Node 0 (ID: 0) received alias 7 from Node 7
+Node 0 (ID: 0) sending alias to Node 1
+Node 1 (ID: 1) received alias 7 from Node 0
+Node 1 (ID: 1) sending alias to Node 2
+Node 2 (ID: 2) received alias 7 from Node 1
+Node 2 (ID: 2) sending alias to Node 3
+Node 3 (ID: 3) received alias 7 from Node 2
+Node 3 (ID: 3) sending alias to Node 4
+Node 4 (ID: 4) received alias 7 from Node 3
+Node 4 (ID: 4) sending alias to Node 5
+Node 5 (ID: 5) received alias 7 from Node 4
+Node 5 (ID: 5) sending alias to Node 6
+Node 6 (ID: 6) received alias 7 from Node 5
+Node 6 (ID: 6) sending alias to Node 7
+Node 7 (ID: 7) received alias 7 from Node 6
+Node 7 is the elected leader.
+Total messages sent: 44
+Total messages received: 44
+Leader is node 7 with alias 7
+PS C:\Users\hsagi\OneDrive\Masaüstü\C532\ahc_elec_template> ^C
+PS C:\Users\hsagi\OneDrive\Masaüstü\C532\ahc_elec_template>
+PS C:\Users\hsagi\OneDrive\Masaüstü\C532\ahc_elec_template>  c:; cd 'c:\Users\hsagi\OneDrive\Masaüstü\C532\ahc_elec_template'; & 'c:\Users\hsagi\AppData\Local\Programs\Python\Python311\python.exe' 'c:\Users\hsagi\.vscode\extensions\ms-python.debugpy-2024.4.0-win32-x64\bundled\libs\debugpy\adapter/../..\debugpy\launcher' '52570' '--' 'c:\Users\hsagi\OneDrive\Masaüstü\C532\ahc_elec_template\elecname\echoelection' 
+Message sent from Process 0 to Process 1: <Wave, Highest ID: 0>
+Message sent from Process 0 to Process 5: <Wave, Highest ID: 0>
+Message sent from Process 1 to Process 0: <Wave, Highest ID: 1>
+Message sent from Process 1 to Process 4: <Wave, Highest ID: 1>
+Message sent from Process 1 to Process 2: <Wave, Highest ID: 1>
+Message sent from Process 3 to Process 4: <Wave, Highest ID: 3>
+Message sent from Process 3 to Process 6: <Wave, Highest ID: 3>
+Message sent from Process 3 to Process 7: <Wave, Highest ID: 3>
+Message sent from Process 6 to Process 3: <Wave, Highest ID: 6>
+Message sent from Process 7 to Process 3: <Wave, Highest ID: 7>
+Message sent from Process 4 to Process 3: <Wave, Highest ID: 4>
+Message sent from Process 4 to Process 5: <Wave, Highest ID: 4>
+Message sent from Process 4 to Process 1: <Wave, Highest ID: 4>
+Message sent from Process 2 to Process 1: <Wave, Highest ID: 2>
+Message sent from Process 5 to Process 4: <Wave, Highest ID: 5>
+Message sent from Process 5 to Process 0: <Wave, Highest ID: 5>
+Message received by Process 3: <Wave, Highest ID: 7>
+Message sent from Process 3 to Process 4: <Wave, Highest ID: 7>
+Message sent from Process 3 to Process 6: <Wave, Highest ID: 7>
+Message sent from Process 3 to Process 7: <Wave, Highest ID: 7>
+Message received by Process 3: <Wave, Highest ID: 6>
+Message received by Process 4: <Wave, Highest ID: 1>
+Message received by Process 0: <Wave, Highest ID: 1>
+Message sent from Process 0 to Process 1: <Wave, Highest ID: 1>
+Message sent from Process 0 to Process 5: <Wave, Highest ID: 1>
+Message received by Process 2: <Wave, Highest ID: 1>
+Message received by Process 6: <Wave, Highest ID: 7>
+Message received by Process 4: <Wave, Highest ID: 7>
+Message sent from Process 6 to Process 3: <Wave, Highest ID: 7>
+Message sent from Process 4 to Process 3: <Wave, Highest ID: 7>
+Message sent from Process 4 to Process 5: <Wave, Highest ID: 7>
+Message sent from Process 4 to Process 1: <Wave, Highest ID: 7>
+Message received by Process 7: <Wave, Highest ID: 7>
+Message received by Process 1: <Wave, Highest ID: 2>
+Message sent from Process 1 to Process 0: <Wave, Highest ID: 2>
+Message sent from Process 1 to Process 4: <Wave, Highest ID: 2>
+Message sent from Process 1 to Process 2: <Wave, Highest ID: 2>
+Message received by Process 1: <Wave, Highest ID: 1>
+Message received by Process 5: <Wave, Highest ID: 1>
+Message received by Process 3: <Wave, Highest ID: 7>
+Message received by Process 5: <Wave, Highest ID: 0>
+Message received by Process 1: <Wave, Highest ID: 0>
+Message received by Process 0: <Wave, Highest ID: 2>
+Message sent from Process 0 to Process 1: <Wave, Highest ID: 2>
+Message sent from Process 0 to Process 5: <Wave, Highest ID: 2>
+Message received by Process 4: <Wave, Highest ID: 2>
+Message received by Process 2: <Wave, Highest ID: 2>
+Message received by Process 4: <Wave, Highest ID: 3>
+Message received by Process 6: <Wave, Highest ID: 3>
+Message received by Process 7: <Wave, Highest ID: 3>
+Message received by Process 1: <Wave, Highest ID: 4>
+Message sent from Process 1 to Process 0: <Wave, Highest ID: 4>
+Message sent from Process 1 to Process 4: <Wave, Highest ID: 4>
+Message sent from Process 1 to Process 2: <Wave, Highest ID: 4>
+Message received by Process 3: <Wave, Highest ID: 4>
+Message received by Process 5: <Wave, Highest ID: 4>
+Message received by Process 4: <Wave, Highest ID: 5>
+Message received by Process 0: <Wave, Highest ID: 5>
+Message sent from Process 0 to Process 1: <Wave, Highest ID: 5>
+Message sent from Process 0 to Process 5: <Wave, Highest ID: 5>
+Message received by Process 5: <Wave, Highest ID: 7>
+Message received by Process 3: <Wave, Highest ID: 7>
+Message sent from Process 5 to Process 4: <Wave, Highest ID: 7>
+Message sent from Process 5 to Process 0: <Wave, Highest ID: 7>
+Message received by Process 1: <Wave, Highest ID: 7>
+Message sent from Process 1 to Process 0: <Wave, Highest ID: 7>
+Message sent from Process 1 to Process 4: <Wave, Highest ID: 7>
+Message sent from Process 1 to Process 2: <Wave, Highest ID: 7>
+Message received by Process 1: <Wave, Highest ID: 2>
+Message received by Process 5: <Wave, Highest ID: 2>
+Message received by Process 4: <Wave, Highest ID: 4>
+Message received by Process 2: <Wave, Highest ID: 4>
+Message sent from Process 2 to Process 1: <Wave, Highest ID: 4>
+Message received by Process 0: <Wave, Highest ID: 4>
+Message received by Process 4: <Wave, Highest ID: 7>
+Message received by Process 0: <Wave, Highest ID: 7>
+Message sent from Process 0 to Process 1: <Wave, Highest ID: 7>
+Message sent from Process 0 to Process 5: <Wave, Highest ID: 7>
+Message received by Process 5: <Wave, Highest ID: 5>
+Message received by Process 1: <Wave, Highest ID: 5>
+Message received by Process 2: <Wave, Highest ID: 7>
+Message received by Process 4: <Wave, Highest ID: 7>
+Message sent from Process 2 to Process 1: <Wave, Highest ID: 7>
+Message received by Process 0: <Wave, Highest ID: 7>
+Message received by Process 5: <Wave, Highest ID: 7>
+Message received by Process 1: <Wave, Highest ID: 7>
+Message received by Process 1: <Wave, Highest ID: 7>
+Message received by Process 1: <Wave, Highest ID: 4>
+The elected leader is Process 7
 
 
-    .. image:: figures/Screen4.jpg
+    .. image:: figures/Screen5.jpg
       :width: 400 
 
 
@@ -62,7 +355,7 @@ In the send_peer method, a message is created and sent to peers. However, the me
 In summary:
 
 Time Complexity: O(N * E)
-Message Complexity: O(0)
+The message complexity of the Echo with Extinction (EwE) algorithm in a ring topology is O(n) is the number of nodes in the ring
 
 
 
