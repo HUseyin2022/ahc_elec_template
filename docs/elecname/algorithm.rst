@@ -13,14 +13,14 @@ In this section, election algorithms, will focus on two ones: the Ring Election:
 Distributed Algorithm: |ElecName| 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The Dolev-Klawe-Rodeh algorithm uses directed rings which messages cannot travel in both directions. Active process whose ID is p and next active neighbors are q and r. The Ids are collected at r. There are three cases to evaluate the election process.
-If p>q and r; r remains active and progress to the next election round
-If p<q or r; r becomes passive
-If p=q and r; r becomes the leader. 
+ The Dolev-Klawe-Rodeh algorithm uses directed rings which messages cannot travel in both directions. Active process whose ID is p and next active neighbors are q and r. The Ids are collected at r. There are three cases to evaluate the election process.
+ If p>q and r; r remains active and progress to the next election round
+ If p<q or r; r becomes passive
+ If p=q and r; r becomes the leader. 
 
-When a process receives a message START(), it initializes competitori and maxidi before sending a message ELECTION(1, idi) on its single outgoing channel (line 1). Let us observe that messages do not carry round numbers. Actually, round numbers are used only to explain the behavior of the algorithm and compute the total number of messages. When a process pi receives a message ELECTION(1, id), pi forwards it on its outgoing channel if it is no longer a competitor. If pi is a competitor, there are two cases.
-If the message ELECTION(1, idi ) is such that id = maxidi , then it has made a full turn on the ring, and consequently maxidi is the greatest identity. In this case, pi sends the message ELECTED(maxidi , idi ), which is propagated on the ring to inform all the processes. If message ELECTION(1, id) is such that id != maxidi , pi copies id in proxy_fori, and forwards the message ELECTION(2, id) on its outgoing channel.
-When a process pi receives a message ELECTION(2, id), it forwards it (as previously) on its outgoing channel if it is no longer a competitor. If it is a competitor, pi checks if proxy_fori > max(id, maxidi ), i.e., if the identity of the process it has to compete for (namely, proxy_fori) is greater than both maxidi (the identity of the process on behalf of which pi was previously competing) and the identity id it has just received. If it is the case, pi updates maxidi and starts a new round. Otherwise, proxy_fori is not the highest identity. Consequently, as pi should compete for an identity that cannot be elected, it stops competing.
+ When a process receives a message START(), it initializes competitori and maxidi before sending a message ELECTION(1, idi) on its single outgoing channel (line 1). Let us observe that messages do not carry round numbers. Actually, round numbers are used only to explain the behavior of the algorithm and compute the total number of messages. When a process pi receives a message ELECTION(1, id), pi forwards it on its outgoing channel if it is no longer a competitor. If pi is a competitor, there are two cases.
+ If the message ELECTION(1, idi ) is such that id = maxidi , then it has made a full turn on the ring, and consequently maxidi is the greatest identity. In this case, pi sends the message ELECTED(maxidi , idi ), which is propagated on the ring to inform all the processes. If message ELECTION(1, id) is such that id != maxidi , pi copies id in proxy_fori, and forwards the message ELECTION(2, id) on its outgoing channel.
+ When a process pi receives a message ELECTION(2, id), it forwards it (as previously) on its outgoing channel if it is no longer a competitor. If it is a competitor, pi checks if proxy_fori > max(id, maxidi ), i.e., if the identity of the process it has to compete for (namely, proxy_fori) is greater than both maxidi (the identity of the process on behalf of which pi was previously competing) and the identity id it has just received. If it is the case, pi updates maxidi and starts a new round. Otherwise, proxy_fori is not the highest identity. Consequently, as pi should compete for an identity that cannot be elected, it stops competing.
     
     .. image:: figures/Screen1.jpg
       :width: 400
