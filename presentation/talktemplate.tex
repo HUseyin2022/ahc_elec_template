@@ -35,27 +35,27 @@
 \def\false{\textbf{F}}
 
 
-\author[HUS]{HUS\\\href{mailto:john@example.com}{john@example.com}}
-%\author[J.\,Doe \& J.\,Doe]
+\author[HUSEYIN SAGIRKAYA]{HUSEYIN SAGIRKAYA\\\href{mailto:huseyin.sagirkaya@metu.edu.tr}{huseyin.sagirkaya@metu.edu.tr}}
+%\author[H.\,Sagirkaya]
 %{%
 %  \texorpdfstring{
 %    \begin{columns}%[onlytextwidth]
 %      \column{.45\linewidth}
 %      \centering
-%      John Doe\\
-%      \href{mailto:john@example.com}{john@example.com}
+%      Huseyin Sagirkaya\\
+%      \href{mailto:huseyin.sagirkaya@metu.edu.tr}{huseyin.sagirkaya@metu.edu.tr}
 %      \column{.45\linewidth}
 %      \centering
-%      Jane Doe\\
-%      \href{mailto:jane.doe@example.com}{jane.doe@example.com}
+%      Huseyin Sagirkaya\\
+%      \href{mailto:huseyin.sagirkaya@metu.edu.tr}{huseyin.sagirkaya@metu.edu.tr}
 %    \end{columns}
 %  }
-%  {John Doe \& Jane Doe}
+%  {Huseyin Sagirkaya}
 %}
 
 \title[WINS Beamer Template]{WINS Lab Beamer Presentation Template}
-\subtitle[Short SubTitle]{How to Prepare a Nice Presentation}
-%\date{} 
+\subtitle[Distributed Computing Algorithms]{Dolev-Klawe-Rodeh and Echo with Extinction Leader Election Algorithms}
+%\date{13/05/2024} 
 
 \begin{document}
 
@@ -72,236 +72,501 @@
 }
 \end{frame}
 
-\begin{frame}[label=toc]
+
+\begin{frame}
     \frametitle{Outline of the Presentation}
-    \tableofcontents[subsubsectionstyle=hide]
-\note{ The possible outline of a talk can be as follows.
+   
 \begin{enumerate}
+
 \item Outline 
 \item Problem and background
 \item Design and methods
 \item Major findings
 \item Conclusion and recommendations 
-\end{enumerate} Please select meaningful section headings that represent the content rather than generic terms such as ``the problem''. Employ top-down structure: from general to more specific.
-}
+\end{enumerate} 
+
 \end{frame}
+
+
+
 %
 %\part{This the First Part of the Presentation}
 %\begin{frame}
 %        \partpage
 %\end{frame}
 %
-\section{The Problem}
+
 %\begin{frame}
 %        \sectionpage
 %\end{frame}
 
 \begin{frame}{The problem}
-\framesubtitle{Tell a \alert{STORY} from the background to the conclusion}
-\begin{block}{The Problem Name} 
-Explain the problem here. Instead of using the term `The problem'', please use specific name for the problem. Tell us a story. Provide a picture for the scenario depicting the problem. Set the scene for average audience.
-\end{block}
-Spend at least \textbf{1.5-2 minutes per slide} on average.
+\framesubtitle{In an election algorithm, each computation should terminate in a configuration where one process is the leader.}
 
-The introduction should be something like ``I will be presenting title of talk. This is joint work with your colleagues or advisor at institution.'' 
+\begin{block}{The Problem Name} 
+Selection a leader ensures continuous coordination between entities. These algorithms also provide a means to recover from failures of the coordinator.
+Define leader in a directed ring and undirected networks. 
+\end{block}
+Distributed system is a collection of independent processes that communicate with each other and cooperate achieving a common goal.
+
 \note{}
 \end{frame}
 
-\section{The Contribution}
+
 \begin{frame}
-\frametitle{What is the solution/contribution}
+\frametitle{Dolev-Klawe-Rodeh and Echo with Extinction Leader Election Algorithms}
 \framesubtitle{}
-Explain \textbf{YOUR} contributions. Go top-down. Give the brief introduction to the contributions at the beginning of the presentation. A slide should have no more than five to six lines of text or bullets. Prefer figures instead of text: A picture is worth a thousand words.
+This presentation presents the detailed explanation of the leader selection algorithms;
+\item Choosing the leader in a circular ring, where processors choose a single leader with the greatest ID at the end of the Dolev-Klawe-Rodeh algorithm.
+\item Choosing the leader in undirected network working for any topology, Echo Algorithm with Extinction.
 \begin{itemize}
-\item Communicate the Key Ideas
-\item Don’t get Bogged Down in Details
-\item Use a Top-down Approach
+\item Determinaton of the algorithms time complexity and message complexity.
+\item Outputs of the algorithms.
+\item Conclusion and trade-offs.
 \end{itemize}
 
-The audience will remember at most one single message \textbf{Which message you want to audience to remember? Can you express this message in less than a minute in an elevator?}
-
 \end{frame}
 
 
-\section{Motivation/Importance}
+
 \begin{frame}
 \frametitle{Motivation/Importance}
-\framesubtitle{``Gain upon solving the problem, pain if not solved'' should be explained}
-Explain why the problem is so important. Throw in a little philosophy if necessary. How does the problem fit into the larger picture? If it involves a model of a real-world phenomenon, then how good is the model? What are its applications? What makes the problem nontrivial? You can return to these issues in the Conclusion, when you can re-address them with the benefit of hindsight.
+\framesubtitle{}
+\item The leader has the responsibility of system management. 
+\item For example the client-server model of resource management: 
+\item The server is the a leader. Client processes send requests for resources to the server
+\item A centralized database manager maintaining a queue of pending read and writes and processes offering a simple solution with manageable complexity.
+\item When the leader (i.e., coordinator) fails, a new leader is needed to be elected. Selection a leader ensures continuous coordination between processes.
 \end{frame}
 
-\section{Background/Model/Definitions/Previous Works}
 
-
-\subsection{Model, Definitions}
 
 \frame{
-\frametitle{Model, Definitions}
-\framesubtitle{Formal definition of a Stochastic Process}
-The use of terminology and jargon should be kept to a minimum, but is impossible to avoid entirely. All terms must be introduced early. It is also useful to remind the audience of the definitions at critical points later in the talk.
-
-Background and this slide can be combined....
+\item Various election algorithms have been proposed for the leader election. Bully Algorithm has been presented by Gracia- Molina in 1982. 
+But its disadvantage is it requires that every process should know the identity of every other process. So it increases traffic. 
+\item There are also various ring election algorithms. 
+\item The Chang-Robert algorithm targets a directed ring. The idea is that only the message with highset ID completes the trip.
+\item Franklins case, message in uses an bidirectional ring to improve for complexity. 
+\item Dolew Klawe Rodeh algorithm changes the Franklins algorithm to unidirectional ring meaning a message cannot travel in both direction. 
+\item Echo algorithm with extinction can work for any topology. The Echo Algorithm facilitates the selection of a leader orcoordinator among the processes in a distributed system.
 }
 
-\subsection{Background, Previous Works}
-\begin{frame}{Background}
-Research is not usually carried out in a vacuum. There will almost always be other relevant or related work, which you should describe. Present an orderly synopsis of these previously- obtained results. A table is often used for this purpose. Be sure to mention the author of each paper and its date of publication. \textbf{Compare and contrast them with each other and with your paper.}
+
+\begin{frame}{Dolev-Klawe-Rodeh algorithm}
+\item  The Dolev-Klawe-Rodeh algorithm uses directed rings which messages cannot travel in both directions. 
+\item Active process whose ID is p and next active neighbors are q and r. 
+\item The Ids are collected at r. There are three cases to evaluate the election process.
+If \[ p > q \] and r; r remains active and progress to the next election round
+If \[ p < q \] or r; r becomes passive
+If p=q and r; r becomes the leader. 
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.3]{figures/Screen2.jpg}
+    \caption{Ring topology}
+    \label{fig:Ring topology}
+\end{figure}
+\end{frame}
+
+\begin{frame}{Echo algorithm with extinction algorithm}
+\item Propagate an "echo" message through the network. 
+Echo messages are forwarded among processes, so every process knows others' status or candidacy. 
+Processes that haven't heard from any higher-priority process declare themselves as leaders and broadcast victory messages.
+When a process p in a wave q is hit by a wave r.
+If \[ q < r \] then p makes the sender its parent, switches to the wave r.
+If \[ q > r \] then p continues with the wave tagged with q.
+If q=r then p treats the incoming message according to the echo algorithm of the wave q.
+If the wave tagged with p completes by executing a decide event at p, then p becomes the leader.
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.25]{figures/Screen3.jpg}
+    \caption{Ring topology}
+    \label{fig:Ring topology}
+\end{figure}
 \end{frame}
 
 
 
 
-\section{Contribution}
-\subsection{Main Point 1}
-\begin{frame}{Main Point 1: A Figure}
-\framesubtitle{Abstract the Major Results}
-Describe the key results of the paper. You may present the statements of the major theorems, but not their proofs. You will probably have to get a little technical here, but do so gradually and carefully.
+\begin{frame}{}
+\framesubtitle{Major Results}
 
 \begin{figure}
     \centering
-    \includegraphics[scale=0.5]{figures/Chick1.png}
-    \caption{Awesome Image}
-    \label{fig:awesome_image}
+    \includegraphics[scale=0.3]{figures/Screen7.jpg}
+    \caption{Ring topology}
+    \label{fig:Ring topology}
 \end{figure}
 \note{
 }
 \end{frame}
 
 
-\subsection{Main Point 2}
+\begin{frame}{}
+\framesubtitle{Major Results}
 
-\begin{frame}
-\frametitle{An Example Distributed Algorithm}
-\framesubtitle{Blind Flooding}
-
-
-Blind flooding on an undirected graph is presented in Algorithm~\ref{alg:blindflooding}.
-
-\begin{center}
-\begin{algorithm}[H]
-	\scriptsize
-	\def\algorithmlabel{BlindFlooding}
-    \caption{\algorithmlabel\ algorithm}
-    \begin{algorithmic}[1]
-    	\Implement {\algorithmlabel}{cf} 
-    	\Use {LinkLayerBroadcast} {lbc} 
-    	\Events{Init, MessageFromTop, MessageFromBottom}
-	\Need {}
-
-        \Event {Init}{}
-        		
-        \Event{MessageFromBottom} { $m$ }
-        		\Trig{lbc}{Broadcast} { $m$  }
-        		
-        \Event{MessageFromTop} { $m$ }	
-        		\Trig{lbc}{Broadcast} { $m$  }
-    \end{algorithmic}
-\end{algorithm}
-\end{center}
-
-
-\end{frame}
-
-\begin{frame}
-\frametitle{Main Point 2}
-\framesubtitle{Explain the Significance of the Results}
-Pause, and explain the relationships between the formal theorems that you have just presented and the informal description that you gave in the Introduction. Make it clear to the audience that the results do live up to the advance publicity. If the statements of the theorems are very technical then this may take some time. It is time well-spent.
-
-\end{frame}
-
-\subsection{Main Point 3}
-\begin{frame}
-\frametitle{Main Point 3}
-\framesubtitle{Sketch a Proof of the Crucial Results}
-The emphasis is on the word ``sketch''. Give a very high-level description of the proofs, emphasizing the proof structure and the proof techniques used. If the proofs have no structure (in which case it may be assumed that you are not the author of the paper), then you must impose one on them. Gloss over the technical details. It is a good idea to point them out but not to explore them.
-\end{frame}
-
-
-\section{Experimental results/Proofs}
-
-\subsection{Main Result 1}
-\begin{frame}
-\frametitle{Main Result 1}
-\framesubtitle{}
-Choose \textbf{just the key results}. They should be important, non-trivial, should give the flavour of the rest of the technical details and should be presentable in a relatively short period of time. Use figures instead of tables instead of text.
-
-Better to present 10\% the entire audience gets than 90\% nobody gets
-\end{frame}
-
-
-\subsection{Main Result 2}
-\begin{frame}
-\frametitle{Main Result 2}
-\framesubtitle{Try a subtitle}
-\begin{itemize}
-\item Make sure your notation is clear and consistent throughout the talk. Prepare a slide that explains the notation in detail, in case that is needed or if somebody asks.
-\item Always label all of your axes on graphs; use short but helpful captions on figures and tables. It is also very useful to have an arrow on the side which clearly shows which direction is considered better (e.g., "up is better").
-\item If you have experimental results, make sure you clearly present the experimental paradigm you used, and the details of your methods, including the number of trials, the specific analysis tools you applied, significance testing, etc.
-\item The talk should contain at least a brief discussion of the limitations and weaknesses of the presented approach or results, in addition to their strengths. This, however, should be done in an objective manner -- don't enthusiastically put down your own work.
-\end{itemize}
-\end{frame}
-
-
-\subsection{Main Result 3}
-\begin{frame}
-\frametitle{Main Result 3}
-\framesubtitle{}
-\begin{itemize}
-\item If time allows, the results should be compared to the most related work in the field. You should at least prepare one slide with a summary of the related work, even if you do not get a chance to discuss it. This will be helpful if someone asks about it, and will demonstrate your mastery of the material.
-\item Spell check again.
-\item Give for each of the x-axis, y-axis, and z-axis
-\item Label, unit, scale (if log scale)
-\item Give the legend
-\item Explain all symbols
-\item Take an example to illustrate a specific point in the figure
-\end{itemize}
-\end{frame}
-
-
-
-\section{Conclusions}
-\begin{frame}
-\frametitle{Conclusions}
-\framesubtitle{Hindsight is Clearer than Foresight}
-\begin{itemize}
-\item You can now make observations that would have been confusing if they were introduced earlier. Use this opportunity to refer to statements that you have made in the previous three sections and weave them into a coherent synopsis. You will regain the attention of the non- experts, who probably didn’t follow all of the Technicalities section. Leave them feeling that they have learned something nonetheless.
-\item Give Open Problems It is traditional to end with a list of open problems that arise from your paper. Mention weaknesses of your paper, possible generalizations, and indications of whether they will be fruitful or not. This way you may defuse antagonistic questions during question time.
-\item Indicate that your Talk is Over
-An acceptable way to do this is to say “Thank-you. Are there any questions?”
-\end{itemize}
-
-\end{frame}
-
-\section*{References}
-\begin{frame}{References}
-\tiny
-\bibliographystyle{IEEEtran}
-\bibliography{refs}
-\end{frame}
-
-\begin{frame}{How to prepare the talk?}
-Please read \url{http://larc.unt.edu/ian/pubs/speaker.pdf}
-\begin{itemize}
-\item The Introduction:  Define the Problem,    Motivate the Audience,    Introduce Terminology,    Discuss Earlier Work,    Emphasize the Contributions of your Paper,    Provide a Road-map.
-\item The Body:    Abstract the Major Results, Explain the Significance of the Results, Sketch a Proof of the Crucial Results
-\item Technicalities: Present a Key Lemma, Present it Carefully
-\item The Conclusion: Hindsight is Clearer than Foresight, Give Open Problems, Indicate that your Talk is Over
-\end{itemize}
-
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.3]{figures/Screen9.jpg}
+    \caption{Ring topology}
+    \label{fig:Ring topology}
+\end{figure}
 \note{
-\begin{itemize}
-\item The Introduction:  Define the Problem,    Motivate the Audience,    Introduce Terminology,    Discuss Earlier Work,    Emphasize the Contributions of your Paper,    Provide a Road-map.
-\item The Body:    Abstract the Major Results, Explain the Significance of the Results, Sketch a Proof of the Crucial Results
-\item Technicalities: Present a Key Lemma, Present it Carefully
-\item The Conclusion: Hindsight is Clearer than Foresight, Give Open Problems, Indicate that your Talk is Over 
-\end{itemize}
+}
+\end{frame}
+
+
+\begin{frame}{}
+\framesubtitle{Major Results}
+
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.3]{figures/Screen9.jpg}
+    \caption{Ring topology}
+    \label{fig:Ring topology}
+\end{figure}
+\note{
 }
 \end{frame}
 
 
 
-\thankslide
+\begin{frame}{}
+\framesubtitle{Major Results}
 
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.3]{figures/Screen10.jpg}
+    \caption{Ring topology}
+    \label{fig:Ring topology}
+\end{figure}
+\note{
+}
+\end{frame}
+
+
+\begin{frame}{}
+\framesubtitle{Major Results}
+
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.3]{figures/Screen11.jpg}
+    \caption{Ring topology}
+    \label{fig:Ring topology}
+\end{figure}
+\note{
+}
+\end{frame}
+
+
+
+\begin{frame}{}
+\framesubtitle{Major Results}
+
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.3]{figures/Screen12.jpg}
+    \caption{Ring topology}
+    \label{fig:Ring topology}
+\end{figure}
+\note{
+}
+\end{frame}
+
+
+
+\begin{frame}{}
+\framesubtitle{Major Results}
+
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.3]{figures/Screen13.jpg}
+    \caption{Ring topology}
+    \label{fig:Ring topology}
+\end{figure}
+\note{
+}
+\end{frame}
+
+
+\begin{frame}{}
+\framesubtitle{Major Results}
+
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.3]{figures/Screen14.jpg}
+    \caption{Ring topology}
+    \label{fig:Ring topology}
+\end{figure}
+\note{
+}
+\end{frame}
+
+
+\begin{frame}{}
+\framesubtitle{Major Results}
+
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.3]{figures/Screen15.jpg}
+    \caption{Ring topology}
+    \label{fig:Ring topology}
+\end{figure}
+\note{
+}
+\end{frame}
+
+
+\begin{frame}{}
+\framesubtitle{Major Results}
+
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.3]{figures/Screen16.jpg}
+    \caption{Ring topology}
+    \label{fig:Ring topology}
+\end{figure}
+\note{
+}
+\end{frame}
+
+
+\begin{frame}{}
+\framesubtitle{Major Results}
+
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.6]{figures/Screen25.jpg}
+    \caption{Network Before Echo Election Algorithm}
+    \label{fig:Network Before Echo Election Algorithm}
+\end{figure}
+\note{
+}
+\end{frame}
+
+
+\begin{frame}{}
+\framesubtitle{}
+
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.6]{figures/Screen26.jpg}
+    \caption{Network After Echo Election Algorithm}
+    \label{fig:Network After Echo Election Algorithm}
+\end{figure}
+\note{
+}
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Time complexity}
+The time complexity measures the number of rounds or steps required for the algorithm to complete its execution.
+Eachround involves processes exchanging messages and performing local computations. 
+\item The number of processes is defined as N. 
+Each round in the algorithm involves each process sending and receiving messages
+to and from other processes. 
+Therefore, the time complexity is directly proportional to the number of messages exchanged in each round. 
+\item The time complexity of the algorithm in terms of the number of messages exchanged is linear: O(E)
+\end{frame}
+
+\begin{frame}
+\frametitle{Message Complexity}
+The Dolev-Klawe-Rodeh Algorithm The message complexity of the algorithm can be analyzed in terms of the the number of processes (N). 
+Each process needs to send a request message to every other process in the network. The message complexity of the algorithm is O(NlogN).
+
+\end{frame}
+
+
+\begin{frame}{}
+\framesubtitle{Message Complexity of DKR Algorithm}
+
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.6]{figures/Screen19.jpg}
+    \caption{Message Complexity of DKR Algorithm}
+    \label{fig:Message Complexity}
+\end{figure}
+\note{
+}
+\end{frame}
+
+
+
+
+\begin{frame}
+\frametitle{Echo Algorithm with Extinction Time complexity}
+Theworst case message complexity of the Echo Algorithm with Extinction is O(NE) where there are at most N waves, at most 2E message in each wave.
+\end{frame}
+
+\begin{frame}
+\frametitle{Echo Algorithm with Extinction Message Complexity}
+The worst case message complexity of the Echo Algorithm with Extinction is O(NE), at most 2E message in each wave.
+
+\end{frame}
+
+
+\begin{frame}{}
+\framesubtitle{Message Complexity of DKR Algorithm}
+
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.6]{figures/Screen21.jpg}
+    \caption{Message Complexity of EWE Algorithm}
+    \label{fig:Message Complexity}
+\end{figure}
+\note{
+}
+\end{frame}
+
+
+\begin{frame}{}
+\framesubtitle{Message Complexity of DKR Experiment}
+
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.6]{figures/Screen18.jpg}
+    \caption{Message Complexity of DKR Experiment}
+    \label{fig:Message Complexity}
+\end{figure}
+\note{
+}
+\end{frame}
+
+
+\begin{frame}{}
+\framesubtitle{Message Complexity of EWE Experiment}
+
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.6]{figures/Screen31.jpg}
+    \caption{Message Complexity of EWE Experiment}
+    \label{fig:Message Complexity}
+\end{figure}
+\note{
+}
+\end{frame}
+
+
+
+
+\begin{frame}
+\frametitle{Result}
+\framesubtitle{}
+
+    \centering
+    \includegraphics[scale=0.6]{figures/Screen20.jpg}
+    \caption{Nodes of DKR Experiment}
+    \label{fig:Message Complexity}
+
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Main Result of DKR Algorithm}
+\begin{itemize}
+\item Node 7 (ID: 7) sending alias to Node 0
+ Node 0 (ID: 0) received alias 7 from Node 7
+Node 0 (ID: 0) sending alias to Node 1
+\item Node 1 (ID: 1) received alias 7 from Node 0
+Node 1 (ID: 1) sending alias to Node 2
+\item Node 2 (ID: 2) received alias 7 from Node 1
+Node 2 (ID: 2) sending alias to Node 3
+\item Node 3 (ID: 3) received alias 7 from Node 2
+Node 3 (ID: 3) sending alias to Node 4
+\item Node 4 (ID: 4) received alias 7 from Node 3
+Node 4 (ID: 4) sending alias to Node 5
+\item Node 5 (ID: 5) received alias 7 from Node 4
+Node 5 (ID: 5) sending alias to Node 6
+\item Node 6 (ID: 6) received alias 7 from Node 5
+Node 6 (ID: 6) sending alias to Node 7
+Node 7 (ID: 7) received alias 7 from Node 6
+Node 7 is the elected leader.
+Total messages sent: 44
+Total messages received: 44
+Leader is node 7 with alias 7
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Result}
+\framesubtitle{}
+The Dolev-Klawe-Rodeh (DKR) algorithm, designed for leader election in ring topologies, does not explicitly include a mechanism for dynamically handling nodes entering or leaving the network during its execution. 
+Instead, it assumes a static set of nodes where each node knows the total number of nodes in the ring and can communicate with its immediate successor. 
+\item Total messages sent after adding new node: 91
+\item Total messages received after adding new node: 91
+\item New Leader after adding node is 8 with alias 8   
+\centering
+\includegraphics[scale=0.2]{figures/Screen36.jpg}
+\caption{Nodes of DKR Experiment}
+\label{fig:Message Complexity}
+
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Result}
+\framesubtitle{}
+
+    \centering
+    \includegraphics[scale=0.4]{figures/Screen30.jpg}
+    \caption{Nodes of EWE Experiment}
+    \label{fig:Message Complexity}
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Result}
+\framesubtitle{}
+
+    \centering
+    \includegraphics[scale=0.4]{figures/Screen31.jpg}
+    \caption{Nodes of EWE Experiment}
+    \label{fig:Message Complexity}
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Result of EWE Algorithm}
+\begin{itemize}
+    \centering
+    \includegraphics[scale=0.4]{figures/Screen32.jpg}
+    \caption{Message Complexity of EWE Experiment}
+    \label{fig:Message Complexity}   
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Conclusions}
+\framesubtitle{}
+\begin{itemize}
+\item The DKR algorithm is effective in ring-based networks with potentially large IDs and where the communication delay between nodes is uniform or predictable. It is more message-efficient compared to simpler algorithms. 
+\item The Echo with Extinction algorithm offers an average-case complexity of O(N) making it an attractive option for scenarios where minimizing message passing is a priority. 
+The extinction mechanism prevents nodes from perpetually echoing messages in isolated segments, promoting convergence towards a leader even amidst network disruptions.
+
+
+\end{itemize}
+
+\end{frame}
+
+
+\begin{frame}{References}
+
+Wan Fokkink, Distributed Algorithms An Intuitive Approach, The MIT Press Cambridge, Massachusetts London, England, 2013
+\item Gerard Tel, Introduction to Distributed Algorithms, CAMBRIDGE UNIVERSITY PRESS, 2001
+\item Leslie Lamport, K. Mani Chandy: Distributed Snapshots: Determining Global States of a Distributed System. In: ACM Transactions on Computer Systems 3. Nr. 1, Februar 1985.
+\item Michel Raynal, Distributed Algorithms for Message-Passing Systems, Springer, 2013
+\bibliographystyle{IEEEtran}
+\bibliography{refs}
+\end{frame}
 
 
 
