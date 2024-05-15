@@ -13,16 +13,21 @@ In this section, election algorithms, will focus on two ones: the Ring Election:
 Distributed Algorithm: |ElecName| 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
- The Dolev-Klawe-Rodeh algorithm uses directed rings which messages cannot travel in both directions. Active process whose ID is p and next active neighbors are q and r. The Ids are collected at r. There are three cases to evaluate the election process.
- If p>q and r; r remains active and progress to the next election round
- If p<q or r; r becomes passive
- If p=q and r; r becomes the leader. 
+The Dolev-Klawe-Rodeh algorithm uses directed rings which messages cannot travel in both directions. Active process whose ID is p and next active neighbors are q and r. The Ids are collected at r. There are three cases to evaluate the election process.
+ 
+If p>q and r; r remains active and progress to the next election round
 
- When a process receives a message START(), it initializes competitori and maxidi before sending a message ELECTION(1, idi) on its single outgoing channel (line 1). Let us observe that messages do not carry round numbers. Actually, round numbers are used only to explain the behavior of the algorithm and compute the total number of messages. When a process pi receives a message ELECTION(1, id), pi forwards it on its outgoing channel if it is no longer a competitor. If pi is a competitor, there are two cases.
- If the message ELECTION(1, idi ) is such that id = maxidi , then it has made a full turn on the ring, and consequently maxidi is the greatest identity. In this case, pi sends the message ELECTED(maxidi , idi ), which is propagated on the ring to inform all the processes. If message ELECTION(1, id) is such that id != maxidi , pi copies id in proxy_fori, and forwards the message ELECTION(2, id) on its outgoing channel.
- When a process pi receives a message ELECTION(2, id), it forwards it (as previously) on its outgoing channel if it is no longer a competitor. If it is a competitor, pi checks if proxy_fori > max(id, maxidi ), i.e., if the identity of the process it has to compete for (namely, proxy_fori) is greater than both maxidi (the identity of the process on behalf of which pi was previously competing) and the identity id it has just received. If it is the case, pi updates maxidi and starts a new round. Otherwise, proxy_fori is not the highest identity. Consequently, as pi should compete for an identity that cannot be elected, it stops competing.
+If p<q or r; r becomes passive
+
+If p=q and r; r becomes the leader. 
+
+When a process receives a message START(), it initializes competitori and maxidi before sending a message ELECTION(1, idi) on its single outgoing channel. Let us observe that messages do not carry round numbers. Actually, round numbers are used only to explain the behavior of the algorithm and compute the total number of messages. When a process pi receives a message ELECTION(1, id), pi forwards it on its outgoing channel if it is no longer a competitor. If pi is a competitor, there are two cases.
+If the message ELECTION(1, idi ) is such that id = maxidi , then it has made a full turn on the ring, and consequently maxidi is the greatest identity. In this case, pi sends the message ELECTED(maxidi , idi ), which is propagated on the ring to inform all the processes. If message ELECTION(1, id) is such that id != maxidi , pi copies id in proxy_fori, and forwards the message ELECTION(2, id) on its outgoing channel.
+When a process pi receives a message ELECTION(2, id), it forwards it (as previously) on its outgoing channel if it is no longer a competitor. If it is a competitor, pi checks if proxy_fori > max(id, maxidi ), i.e., if the identity of the process it has to compete for (namely, proxy_fori) is greater than both maxidi (the identity of the process on behalf of which pi was previously competing) and the identity id it has just received. If it is the case, pi updates maxidi and starts a new round. Otherwise, proxy_fori is not the highest identity. Consequently, as pi should compete for an identity that cannot be elected, it stops competing.
     
-    .. image:: figures/Screen1.jpg
+Round in the algorithm
+
+    .. image:: figures/Screen7.jpg
       :width: 400
 
 **The Dolev-Klawe-Rodeh Algorithm:**
@@ -57,18 +62,27 @@ The Dolev-Klawe-Rodeh :ref:`Algorithm <DolevKlaweRodehAlgorithm>` [Raynal2013]_ 
         when ELECTED(id1, id2) is received do
              leaderi ←id1; donei ←true; electedi ←(id1 = idi);
              if (id2 != idi ) then send ELECTED(id1, id2) end if.
-Processes  communicate  with  alias  (which  can  change  from  round  toround), unique leader with largest alias ID 
-Nodes:  active, passive (=forward)
-Each node has variablealias(i) to keep track of its alias
-Algorithm Outline
-Sends alias to successor
-Receives alias from predecessor in ring:  alias (PD)
-If alias = alias PD: node i is leader
-Else:
-Send alias PD to successor
-Receives alias from predecessor of its predecessor:  alias (PD2)
-If alias (PD)>max (alias, alias(PD2)):  alias = alias (PD), node i remains active andmoves to next round
-else:  node i turns passive
+
+In other words, the code block provides:
+
+.. _DolevKlaweRodehAlgorithm:
+
+    .. code-block:: RST
+        :linenos:
+        :caption: The Dolev-Klawe-Rodeh Algorithm.
+
+        Processes  communicate  with  alias  (which  can  change  from  round  toround), unique leader with largest alias,ID 
+        Nodes:  active, passive (=forward)
+        Each node has variablealias(i) to keep track of its alias
+        Algorithm Outline
+        Sends alias to successor
+        Receives alias from predecessor in ring:  alias (PD)
+        If alias = alias PD: node i is leader
+        Else:
+        Send alias PD to successor
+        Receives alias from predecessor of its predecessor:  alias (PD2)
+        If alias (PD)>max (alias, alias(PD2)):  alias = alias (PD), node i remains active andmoves to next round
+        else:  node i turns passive
 
 **Correctness:**
     
@@ -86,10 +100,16 @@ else:  node i turns passive
 Echo algorithm with extinction processes propagate an "echo" message through the network. Echo messages are forwarded among processes, ensuring every process becomes aware of others' status or candidacy. Upon receiving echo messages from all neighbors, a process confirms its status or candidacy.  Processes that haven't heard from any higher-priority process declare themselves as leaders and broadcast victory messages.The algorithm concludes when all processes have confirmed their status or acknowledged the leader's victory, signaling successful termination or leader election.
 
 Suppose a process p in a wave q is hit by a wave r.
+
 If q<r then p makes the sender its parent, switches to the wave r.
+
 If q>r then p continues with the wave tagged with q.
+
 If q=r then p treats the incoming message according to the echo algorithm of the wave q.
+
 If the wave tagged with p completes by executing a decide event at p, then p becomes the leader.
+
+Echo algorithm with extinction algorithm's network
 
  .. image:: figures/Screen3.jpg
       :width: 400
